@@ -16,8 +16,5 @@
 
 
 	<!-- 映射 -->
-	<mvc:resources location="/WEB-INF/resource/" mapping="/resource/**" />
-	<mvc:resources location="/WEB-INF/resource/" mapping="/fundraising/resource/**" />
 	<mvc:resources location="/upload/" mapping="/upload/**" />
-
 </beans>

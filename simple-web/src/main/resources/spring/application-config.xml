@@ -20,8 +20,16 @@
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<property name="supportedMediaTypes" value="text/plain;charset=UTF-8" />
 			</bean>
-			<bean class="org.springframework.http.converter.json.GsonHttpMessageConverter">
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="com.fasterxml.jackson.databind.ObjectMapper">
+						<property name="serializationInclusion">
+							<value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+						</property>
+					</bean>
+				</property>
 			</bean>
+			<bean class="org.springframework.http.converter.json.GsonHttpMessageConverter" />
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 	<!-- <bean id="jacksonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper"> <property name="dateFormat" ref="dateFormat" /> </bean> -->
@@ -36,6 +44,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:/properties/*.properties</value>
+				<value>file:/apps/webapp/conf/simple/properties/*.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -49,5 +58,7 @@
 	<import resource="classpath:/spring/datasource.xml" />
 	<import resource="classpath:/spring/db-manager.xml" />
 	<import resource="classpath:/spring/HibernateDB.xml" />
+	<import resource="classpath:/spring/resource.xml" />
+	<import resource="classpath:/spring/session.xml" />
 	<import resource="classpath:/spring/resource.xml" />
 </beans>

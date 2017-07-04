@@ -3,7 +3,34 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-
+	<!-- <filter>
+		<filter-name>httpPutFormContentFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>httpPutFormContentFilter</filter-name>
+		<url-pattern>/</url-pattern>
+	</filter-mapping> -->
+	<!-- SESSION -->
+	<filter>
+		<filter-name>springSessionRepositoryFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSessionRepositoryFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- debug用户 -->
+	<filter>
+		<filter-name>debugLoginFilter</filter-name>
+		<filter-class>com.simple.web.filter.DebugLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>debugLoginFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<!-- MVC -->
 	<display-name>SpringMVC</display-name>
 	<servlet>

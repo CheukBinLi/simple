@@ -1,5 +1,6 @@
 package com.simple.web.controller.manager;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,24 +15,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.simple.core.entity.Authority;
+import com.simple.core.entity.Tenant;
 import com.simple.core.model.LoginInfoModel;
-import com.simple.core.service.AuthorityService;
+import com.simple.core.service.TenantService;
 import com.simple.web.controller.AbstractController;
 
 @Controller
 @Scope("prototype")
-@RequestMapping("/manager/authority/")
-public class AuthorityController extends AbstractController {
+@RequestMapping("/manager/tenant/")
+public class TenantManagerController extends AbstractController {
 
 	@Autowired
-	private AuthorityService authorityService;
+	private TenantService tenantService;
 
 	@ResponseBody
 	@RequestMapping(value = "get/{id}", method = { RequestMethod.GET })
 	public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
 		try {
-			return success(authorityService.getByPk(id));
+			return success(tenantService.getByPk(id));
 		} catch (Throwable e) {
 			return fail(e);
 		}
@@ -39,9 +40,10 @@ public class AuthorityController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "getlist", method = { RequestMethod.POST })
-	public Object getList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object getList(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
-			return success(authorityService.getpage(checkPageAndSize(params)));
+			return success(tenantService.getpage(checkPageAndSize(params)));
 		} catch (Throwable e) {
 			return fail(e);
 		}
@@ -49,11 +51,12 @@ public class AuthorityController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "put", method = { RequestMethod.PUT })
-	public Object put(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object put(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			LoginInfoModel loginInfoModel = getLoginInfo(request);
 			params.put("tenantId", loginInfoModel.getUser().getTenantId());
-			authorityService.saveOrUpdate(fillObject(new Authority(), params));
+			tenantService.update(fillObject(new Tenant(), params));
 			return success();
 		} catch (Throwable e) {
 			return fail(e);
@@ -62,9 +65,10 @@ public class AuthorityController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "delete", method = { RequestMethod.DELETE })
-	public Object delete(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object delete(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
-			authorityService.delete(params);
+			tenantService.delete(params);
 			return success();
 		} catch (Throwable e) {
 			return fail(e);

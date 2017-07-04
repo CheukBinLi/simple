@@ -1,36 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QueryList SYSTEM "Query.dtd">
+<!--  
+{field}_li — like %?%
+{field}_lt —参数1是否小于参数2 <
+{field}_le —参数1是否小于等于参数2 <=
+{field}_gt —参数1是否大于参数2 >
+{field}_ge —参数1是否大于等于参数2 >=
+{field}_not 不等于<>
+orderby 是否排序
+sort:asc/desc
+  -->
 <QueryList package="com.simple.core.entity.Article">
 	<Alias name="com.simple.core.entity.Article" Alias="@Article@" />
 	<Join name="defaultWhereList">
 		<![CDATA[ 
-				<%if(has(id)){%>
-					AND id=:id 
-				<%}%>
-				<%else if (has(id_not)){%>
-						and A.id <> :id_not 
-				<%}%>
-				<%else if (has(id_li)){%>
-						and A.id like '%'||:id_li||'%' 
-				<%}%>
-				<%if(has(content)){%>
-					AND content=:content 
-				<%}%>
-				<%else if (has(content_not)){%>
-						and A.content <> :content_not 
-				<%}%>
-				<%else if (has(content_li)){%>
-						and A.content like '%'||:content_li||'%' 
-				<%}%>
-				<%if(has(tenantId)){%>
-					AND tenantId=:tenantId 
-				<%}%>
-				<%else if (has(tenantId_not)){%>
-						and A.tenantId <> :tenantId_not 
-				<%}%>
-				<%else if (has(tenantId_li)){%>
-						and A.tenantId like '%'||:tenantId_li||'%' 
-				<%}%>
 				<%if(has(extend)){%>
 					AND extend=:extend 
 				<%}%>
@@ -39,6 +22,48 @@
 				<%}%>
 				<%else if (has(extend_li)){%>
 						and A.extend like '%'||:extend_li||'%' 
+				<%}%>
+				<%if(has(lastUpdateDateTime)){%>
+					AND lastUpdateDateTime=:lastUpdateDateTime 
+				<%}%>
+				<%else if (has(lastUpdateDateTime_not)){%>
+						and A.lastUpdateDateTime <> :lastUpdateDateTime_not 
+				<%}%>
+				<%else if (has(lastUpdateDateTime_li)){%>
+						and A.lastUpdateDateTime like '%'||:lastUpdateDateTime_li||'%' 
+				<%}%>
+				<%if (has(lastUpdateDateTime_gt)){%>
+						and A.lastUpdateDateTime>:lastUpdateDateTime_gt 
+				<%}%>		
+				<%else if (has(lastUpdateDateTime_ge)){%>
+						and A.lastUpdateDateTime>=:lastUpdateDateTime_ge
+				<%}%>		 
+				<%if (has(lastUpdateDateTime_lt)){%>
+						and A.lastUpdateDateTime<:lastUpdateDateTime_lt 
+				<%}%>		
+				<%else if (has(lastUpdateDateTime_le)){%>
+						and A.lastUpdateDateTime<=:lastUpdateDateTime_le 
+				<%}%>
+				<%if(has(logicStatus)){%>
+					AND logicStatus=:logicStatus 
+				<%}%>
+				<%else if (has(logicStatus_not)){%>
+						and A.logicStatus <> :logicStatus_not 
+				<%}%>
+				<%else if (has(logicStatus_li)){%>
+						and A.logicStatus like '%'||:logicStatus_li||'%' 
+				<%}%>
+				<%if (has(logicStatus_gt)){%>
+						and A.logicStatus>:logicStatus_gt 
+				<%}%>		
+				<%else if (has(logicStatus_ge)){%>
+						and A.logicStatus>=:logicStatus_ge
+				<%}%>		 
+				<%if (has(logicStatus_lt)){%>
+						and A.logicStatus<:logicStatus_lt 
+				<%}%>		
+				<%else if (has(logicStatus_le)){%>
+						and A.logicStatus<=:logicStatus_le 
 				<%}%>
 				<%if(has(articleType)){%>
 					AND articleType=:articleType 
@@ -49,14 +74,38 @@
 				<%else if (has(articleType_li)){%>
 						and A.articleType like '%'||:articleType_li||'%' 
 				<%}%>
-				<%if(has(title)){%>
-					AND title=:title 
+				<%if (has(articleType_gt)){%>
+						and A.articleType>:articleType_gt 
+				<%}%>		
+				<%else if (has(articleType_ge)){%>
+						and A.articleType>=:articleType_ge
+				<%}%>		 
+				<%if (has(articleType_lt)){%>
+						and A.articleType<:articleType_lt 
+				<%}%>		
+				<%else if (has(articleType_le)){%>
+						and A.articleType<=:articleType_le 
 				<%}%>
-				<%else if (has(title_not)){%>
-						and A.title <> :title_not 
+				<%if(has(tenantId)){%>
+					AND tenantId=:tenantId 
 				<%}%>
-				<%else if (has(title_li)){%>
-						and A.title like '%'||:title_li||'%' 
+				<%else if (has(tenantId_not)){%>
+						and A.tenantId <> :tenantId_not 
+				<%}%>
+				<%else if (has(tenantId_li)){%>
+						and A.tenantId like '%'||:tenantId_li||'%' 
+				<%}%>
+				<%if (has(tenantId_gt)){%>
+						and A.tenantId>:tenantId_gt 
+				<%}%>		
+				<%else if (has(tenantId_ge)){%>
+						and A.tenantId>=:tenantId_ge
+				<%}%>		 
+				<%if (has(tenantId_lt)){%>
+						and A.tenantId<:tenantId_lt 
+				<%}%>		
+				<%else if (has(tenantId_le)){%>
+						and A.tenantId<=:tenantId_le 
 				<%}%>
 				<%if(has(viewedCount)){%>
 					AND viewedCount=:viewedCount 
@@ -66,6 +115,78 @@
 				<%}%>
 				<%else if (has(viewedCount_li)){%>
 						and A.viewedCount like '%'||:viewedCount_li||'%' 
+				<%}%>
+				<%if (has(viewedCount_gt)){%>
+						and A.viewedCount>:viewedCount_gt 
+				<%}%>		
+				<%else if (has(viewedCount_ge)){%>
+						and A.viewedCount>=:viewedCount_ge
+				<%}%>		 
+				<%if (has(viewedCount_lt)){%>
+						and A.viewedCount<:viewedCount_lt 
+				<%}%>		
+				<%else if (has(viewedCount_le)){%>
+						and A.viewedCount<=:viewedCount_le 
+				<%}%>
+				<%if(has(id)){%>
+					AND id=:id 
+				<%}%>
+				<%else if (has(id_not)){%>
+						and A.id <> :id_not 
+				<%}%>
+				<%else if (has(id_li)){%>
+						and A.id like '%'||:id_li||'%' 
+				<%}%>
+				<%if (has(id_gt)){%>
+						and A.id>:id_gt 
+				<%}%>		
+				<%else if (has(id_ge)){%>
+						and A.id>=:id_ge
+				<%}%>		 
+				<%if (has(id_lt)){%>
+						and A.id<:id_lt 
+				<%}%>		
+				<%else if (has(id_le)){%>
+						and A.id<=:id_le 
+				<%}%>
+				<%if(has(title)){%>
+					AND title=:title 
+				<%}%>
+				<%else if (has(title_not)){%>
+						and A.title <> :title_not 
+				<%}%>
+				<%else if (has(title_li)){%>
+						and A.title like '%'||:title_li||'%' 
+				<%}%>
+				<%if(has(content)){%>
+					AND content=:content 
+				<%}%>
+				<%else if (has(content_not)){%>
+						and A.content <> :content_not 
+				<%}%>
+				<%else if (has(content_li)){%>
+						and A.content like '%'||:content_li||'%' 
+				<%}%>
+				<%if(has(createDateTime)){%>
+					AND createDateTime=:createDateTime 
+				<%}%>
+				<%else if (has(createDateTime_not)){%>
+						and A.createDateTime <> :createDateTime_not 
+				<%}%>
+				<%else if (has(createDateTime_li)){%>
+						and A.createDateTime like '%'||:createDateTime_li||'%' 
+				<%}%>
+				<%if (has(createDateTime_gt)){%>
+						and A.createDateTime>:createDateTime_gt 
+				<%}%>		
+				<%else if (has(createDateTime_ge)){%>
+						and A.createDateTime>=:createDateTime_ge
+				<%}%>		 
+				<%if (has(createDateTime_lt)){%>
+						and A.createDateTime<:createDateTime_lt 
+				<%}%>		
+				<%else if (has(createDateTime_le)){%>
+						and A.createDateTime<=:createDateTime_le 
 				<%}%>
 			<%if (has(orderby)) {%>
 					ORDER BY A.${orderby} 

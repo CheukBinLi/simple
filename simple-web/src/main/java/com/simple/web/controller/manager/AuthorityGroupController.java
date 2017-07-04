@@ -1,5 +1,6 @@
 package com.simple.web.controller.manager;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,8 @@ public class AuthorityGroupController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "getlist", method = { RequestMethod.POST })
-	public Object getList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object getList(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			return success(authorityGroupService.getpage(checkPageAndSize(params)));
 		} catch (Throwable e) {
@@ -49,7 +51,8 @@ public class AuthorityGroupController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "put", method = { RequestMethod.PUT })
-	public Object put(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object put(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			LoginInfoModel loginInfoModel = getLoginInfo(request);
 			params.put("tenantId", loginInfoModel.getUser().getTenantId());
@@ -62,7 +65,8 @@ public class AuthorityGroupController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "delete", method = { RequestMethod.DELETE })
-	public Object delete(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object delete(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			authorityGroupService.delete(params);
 			return success();

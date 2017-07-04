@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.cheuks.bin.original.common.dbmanager.dao.BaseDao;
 import com.cheuks.bin.original.common.dbmanager.service.AbstractService;
+import com.cheuks.bin.original.common.util.CollectionUtil;
 import com.simple.core.dao.KeyValueExtendDao;
 import com.simple.core.entity.KeyValueExtend;
 import com.simple.core.service.KeyValueExtendService;
@@ -26,16 +27,18 @@ public class KeyValueExtendServiceImpl extends AbstractService<KeyValueExtend, L
 	public void saveOrUpdate(Long tenantId, Map<String, Object> params) throws Throwable {
 		params.put("tenantId", tenantId);
 		KeyValueExtend keyValueExtend;
-		if (params.containsKey("id")) ;
-		{
-			List<KeyValueExtend> list = getList(params);
+		if (params.containsKey("id")) {
+			Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", params.remove("id"), "tenantId", tenantId });
+			List<KeyValueExtend> list = getList(tempParams);
 			if (null != list && list.size() == 1) {
 				keyValueExtend = list.get(0);
 				keyValueExtend = fillObject(keyValueExtend, params);
 				keyValueExtendDao.update(keyValueExtend);
+				return;
 			}
+			throw new RuntimeException("can't found data for id is " + tempParams.get("id") + " and tenantId is " + tenantId);
 		}
-		keyValueExtendDao.save(fillObject(new KeyValueExtend(), params));
+		keyValueExtendDao.save(fillObject(new KeyValueExtend().setId(generateId()), params));
 	}
 
 	public void update(Long tenantId, Map<String, Object> params) throws Throwable {

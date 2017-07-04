@@ -10,8 +10,8 @@
 orderby 是否排序
 sort:asc/desc
   -->
-<QueryList package="com.simple.core.entity.User">
-	<Alias name="com.simple.core.entity.User" Alias="@User@" />
+<QueryList package="com.simple.core.entity.Gallery">
+	<Alias name="com.simple.core.entity.Gallery" Alias="@Gallery@" />
 	<Join name="defaultWhereList">
 		<![CDATA[ 
 				<%if(has(lastUpdateDateTime)){%>
@@ -35,14 +35,14 @@ sort:asc/desc
 				<%else if (has(lastUpdateDateTime_le)){%>
 						and A.lastUpdateDateTime<=:lastUpdateDateTime_le 
 				<%}%>
-				<%if(has(password)){%>
-					AND password=:password 
+				<%if(has(path)){%>
+					AND path=:path 
 				<%}%>
-				<%else if (has(password_not)){%>
-						and A.password <> :password_not 
+				<%else if (has(path_not)){%>
+						and A.path <> :path_not 
 				<%}%>
-				<%else if (has(password_li)){%>
-						and A.password like '%'||:password_li||'%' 
+				<%else if (has(path_li)){%>
+						and A.path like '%'||:path_li||'%' 
 				<%}%>
 				<%if(has(logicStatus)){%>
 					AND logicStatus=:logicStatus 
@@ -65,26 +65,26 @@ sort:asc/desc
 				<%else if (has(logicStatus_le)){%>
 						and A.logicStatus<=:logicStatus_le 
 				<%}%>
-				<%if(has(personnelInfoId)){%>
-					AND personnelInfoId=:personnelInfoId 
+				<%if(has(size)){%>
+					AND size=:size 
 				<%}%>
-				<%else if (has(personnelInfoId_not)){%>
-						and A.personnelInfoId <> :personnelInfoId_not 
+				<%else if (has(size_not)){%>
+						and A.size <> :size_not 
 				<%}%>
-				<%else if (has(personnelInfoId_li)){%>
-						and A.personnelInfoId like '%'||:personnelInfoId_li||'%' 
+				<%else if (has(size_li)){%>
+						and A.size like '%'||:size_li||'%' 
 				<%}%>
-				<%if (has(personnelInfoId_gt)){%>
-						and A.personnelInfoId>:personnelInfoId_gt 
+				<%if (has(size_gt)){%>
+						and A.size>:size_gt 
 				<%}%>		
-				<%else if (has(personnelInfoId_ge)){%>
-						and A.personnelInfoId>=:personnelInfoId_ge
+				<%else if (has(size_ge)){%>
+						and A.size>=:size_ge
 				<%}%>		 
-				<%if (has(personnelInfoId_lt)){%>
-						and A.personnelInfoId<:personnelInfoId_lt 
+				<%if (has(size_lt)){%>
+						and A.size<:size_lt 
 				<%}%>		
-				<%else if (has(personnelInfoId_le)){%>
-						and A.personnelInfoId<=:personnelInfoId_le 
+				<%else if (has(size_le)){%>
+						and A.size<=:size_le 
 				<%}%>
 				<%if(has(tenantId)){%>
 					AND tenantId=:tenantId 
@@ -107,6 +107,15 @@ sort:asc/desc
 				<%else if (has(tenantId_le)){%>
 						and A.tenantId<=:tenantId_le 
 				<%}%>
+				<%if(has(name)){%>
+					AND name=:name 
+				<%}%>
+				<%else if (has(name_not)){%>
+						and A.name <> :name_not 
+				<%}%>
+				<%else if (has(name_li)){%>
+						and A.name like '%'||:name_li||'%' 
+				<%}%>
 				<%if(has(id)){%>
 					AND id=:id 
 				<%}%>
@@ -127,36 +136,6 @@ sort:asc/desc
 				<%}%>		
 				<%else if (has(id_le)){%>
 						and A.id<=:id_le 
-				<%}%>
-				<%if(has(userName)){%>
-					AND userName=:userName 
-				<%}%>
-				<%else if (has(userName_not)){%>
-						and A.userName <> :userName_not 
-				<%}%>
-				<%else if (has(userName_li)){%>
-						and A.userName like '%'||:userName_li||'%' 
-				<%}%>
-				<%if(has(authorityGroupId)){%>
-					AND authorityGroupId=:authorityGroupId 
-				<%}%>
-				<%else if (has(authorityGroupId_not)){%>
-						and A.authorityGroupId <> :authorityGroupId_not 
-				<%}%>
-				<%else if (has(authorityGroupId_li)){%>
-						and A.authorityGroupId like '%'||:authorityGroupId_li||'%' 
-				<%}%>
-				<%if (has(authorityGroupId_gt)){%>
-						and A.authorityGroupId>:authorityGroupId_gt 
-				<%}%>		
-				<%else if (has(authorityGroupId_ge)){%>
-						and A.authorityGroupId>=:authorityGroupId_ge
-				<%}%>		 
-				<%if (has(authorityGroupId_lt)){%>
-						and A.authorityGroupId<:authorityGroupId_lt 
-				<%}%>		
-				<%else if (has(authorityGroupId_le)){%>
-						and A.authorityGroupId<=:authorityGroupId_le 
 				<%}%>
 				<%if(has(createDateTime)){%>
 					AND createDateTime=:createDateTime 
@@ -179,27 +158,6 @@ sort:asc/desc
 				<%else if (has(createDateTime_le)){%>
 						and A.createDateTime<=:createDateTime_le 
 				<%}%>
-				<%if(has(status)){%>
-					AND status=:status 
-				<%}%>
-				<%else if (has(status_not)){%>
-						and A.status <> :status_not 
-				<%}%>
-				<%else if (has(status_li)){%>
-						and A.status like '%'||:status_li||'%' 
-				<%}%>
-				<%if (has(status_gt)){%>
-						and A.status>:status_gt 
-				<%}%>		
-				<%else if (has(status_ge)){%>
-						and A.status>=:status_ge
-				<%}%>		 
-				<%if (has(status_lt)){%>
-						and A.status<:status_lt 
-				<%}%>		
-				<%else if (has(status_le)){%>
-						and A.status<=:status_le 
-				<%}%>
 			<%if (has(orderby)) {%>
 					ORDER BY A.${orderby} 
 					<%if (has(sort)){%>
@@ -212,7 +170,7 @@ sort:asc/desc
 	</Join>
 	<Query name="list" type="HQL" freemarkFormat="true" Alias="true" joinRef="defaultWhereList" joinTag="@WHERE@">
 		<![CDATA[ 
-			FROM @User@ A 
+			FROM @Gallery@ A 
 			WHERE 
 			1=1 
 			@WHERE@ 
@@ -220,7 +178,7 @@ sort:asc/desc
 	</Query>
 	<Query name="count" type="HQL" freemarkFormat="true" Alias="true" joinRef="defaultWhereList" joinTag="@WHERE@">
 		<![CDATA[ 
-			SELECT COUNT(1) FROM @User@ A 
+			SELECT COUNT(1) FROM @Gallery@ A 
 			WHERE 
 			1=1 
 			@WHERE@ 

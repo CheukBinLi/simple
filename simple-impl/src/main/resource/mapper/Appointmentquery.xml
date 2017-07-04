@@ -1,54 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QueryList SYSTEM "Query.dtd">
+<!--  
+{field}_li — like %?%
+{field}_lt —参数1是否小于参数2 <
+{field}_le —参数1是否小于等于参数2 <=
+{field}_gt —参数1是否大于参数2 >
+{field}_ge —参数1是否大于等于参数2 >=
+{field}_not 不等于<>
+orderby 是否排序
+sort:asc/desc
+  -->
 <QueryList package="com.simple.core.entity.Appointment">
 	<Alias name="com.simple.core.entity.Appointment" Alias="@Appointment@" />
 	<Join name="defaultWhereList">
 		<![CDATA[ 
-				<%if(has(address)){%>
-					AND address=:address 
-				<%}%>
-				<%else if (has(address_not)){%>
-						and A.address <> :address_not 
-				<%}%>
-				<%else if (has(address_li)){%>
-						and A.address like '%'||:address_li||'%' 
-				<%}%>
-				<%if(has(id)){%>
-					AND id=:id 
-				<%}%>
-				<%else if (has(id_not)){%>
-						and A.id <> :id_not 
-				<%}%>
-				<%else if (has(id_li)){%>
-						and A.id like '%'||:id_li||'%' 
-				<%}%>
-				<%if(has(tenantId)){%>
-					AND tenantId=:tenantId 
-				<%}%>
-				<%else if (has(tenantId_not)){%>
-						and A.tenantId <> :tenantId_not 
-				<%}%>
-				<%else if (has(tenantId_li)){%>
-						and A.tenantId like '%'||:tenantId_li||'%' 
-				<%}%>
-				<%if(has(employer)){%>
-					AND employer=:employer 
-				<%}%>
-				<%else if (has(employer_not)){%>
-						and A.employer <> :employer_not 
-				<%}%>
-				<%else if (has(employer_li)){%>
-						and A.employer like '%'||:employer_li||'%' 
-				<%}%>
-				<%if(has(phone)){%>
-					AND phone=:phone 
-				<%}%>
-				<%else if (has(phone_not)){%>
-						and A.phone <> :phone_not 
-				<%}%>
-				<%else if (has(phone_li)){%>
-						and A.phone like '%'||:phone_li||'%' 
-				<%}%>
 				<%if(has(qq)){%>
 					AND qq=:qq 
 				<%}%>
@@ -57,15 +22,6 @@
 				<%}%>
 				<%else if (has(qq_li)){%>
 						and A.qq like '%'||:qq_li||'%' 
-				<%}%>
-				<%if(has(email)){%>
-					AND email=:email 
-				<%}%>
-				<%else if (has(email_not)){%>
-						and A.email <> :email_not 
-				<%}%>
-				<%else if (has(email_li)){%>
-						and A.email like '%'||:email_li||'%' 
 				<%}%>
 				<%if(has(serviceType)){%>
 					AND serviceType=:serviceType 
@@ -76,14 +32,89 @@
 				<%else if (has(serviceType_li)){%>
 						and A.serviceType like '%'||:serviceType_li||'%' 
 				<%}%>
-				<%if(has(serviceStatus)){%>
-					AND serviceStatus=:serviceStatus 
+				<%if (has(serviceType_gt)){%>
+						and A.serviceType>:serviceType_gt 
+				<%}%>		
+				<%else if (has(serviceType_ge)){%>
+						and A.serviceType>=:serviceType_ge
+				<%}%>		 
+				<%if (has(serviceType_lt)){%>
+						and A.serviceType<:serviceType_lt 
+				<%}%>		
+				<%else if (has(serviceType_le)){%>
+						and A.serviceType<=:serviceType_le 
 				<%}%>
-				<%else if (has(serviceStatus_not)){%>
-						and A.serviceStatus <> :serviceStatus_not 
+				<%if(has(lastUpdateDateTime)){%>
+					AND lastUpdateDateTime=:lastUpdateDateTime 
 				<%}%>
-				<%else if (has(serviceStatus_li)){%>
-						and A.serviceStatus like '%'||:serviceStatus_li||'%' 
+				<%else if (has(lastUpdateDateTime_not)){%>
+						and A.lastUpdateDateTime <> :lastUpdateDateTime_not 
+				<%}%>
+				<%else if (has(lastUpdateDateTime_li)){%>
+						and A.lastUpdateDateTime like '%'||:lastUpdateDateTime_li||'%' 
+				<%}%>
+				<%if (has(lastUpdateDateTime_gt)){%>
+						and A.lastUpdateDateTime>:lastUpdateDateTime_gt 
+				<%}%>		
+				<%else if (has(lastUpdateDateTime_ge)){%>
+						and A.lastUpdateDateTime>=:lastUpdateDateTime_ge
+				<%}%>		 
+				<%if (has(lastUpdateDateTime_lt)){%>
+						and A.lastUpdateDateTime<:lastUpdateDateTime_lt 
+				<%}%>		
+				<%else if (has(lastUpdateDateTime_le)){%>
+						and A.lastUpdateDateTime<=:lastUpdateDateTime_le 
+				<%}%>
+				<%if(has(logicStatus)){%>
+					AND logicStatus=:logicStatus 
+				<%}%>
+				<%else if (has(logicStatus_not)){%>
+						and A.logicStatus <> :logicStatus_not 
+				<%}%>
+				<%else if (has(logicStatus_li)){%>
+						and A.logicStatus like '%'||:logicStatus_li||'%' 
+				<%}%>
+				<%if (has(logicStatus_gt)){%>
+						and A.logicStatus>:logicStatus_gt 
+				<%}%>		
+				<%else if (has(logicStatus_ge)){%>
+						and A.logicStatus>=:logicStatus_ge
+				<%}%>		 
+				<%if (has(logicStatus_lt)){%>
+						and A.logicStatus<:logicStatus_lt 
+				<%}%>		
+				<%else if (has(logicStatus_le)){%>
+						and A.logicStatus<=:logicStatus_le 
+				<%}%>
+				<%if(has(address)){%>
+					AND address=:address 
+				<%}%>
+				<%else if (has(address_not)){%>
+						and A.address <> :address_not 
+				<%}%>
+				<%else if (has(address_li)){%>
+						and A.address like '%'||:address_li||'%' 
+				<%}%>
+				<%if(has(personnelInfoId)){%>
+					AND personnelInfoId=:personnelInfoId 
+				<%}%>
+				<%else if (has(personnelInfoId_not)){%>
+						and A.personnelInfoId <> :personnelInfoId_not 
+				<%}%>
+				<%else if (has(personnelInfoId_li)){%>
+						and A.personnelInfoId like '%'||:personnelInfoId_li||'%' 
+				<%}%>
+				<%if (has(personnelInfoId_gt)){%>
+						and A.personnelInfoId>:personnelInfoId_gt 
+				<%}%>		
+				<%else if (has(personnelInfoId_ge)){%>
+						and A.personnelInfoId>=:personnelInfoId_ge
+				<%}%>		 
+				<%if (has(personnelInfoId_lt)){%>
+						and A.personnelInfoId<:personnelInfoId_lt 
+				<%}%>		
+				<%else if (has(personnelInfoId_le)){%>
+						and A.personnelInfoId<=:personnelInfoId_le 
 				<%}%>
 				<%if(has(remark)){%>
 					AND remark=:remark 
@@ -94,6 +125,27 @@
 				<%else if (has(remark_li)){%>
 						and A.remark like '%'||:remark_li||'%' 
 				<%}%>
+				<%if(has(createDateTime)){%>
+					AND createDateTime=:createDateTime 
+				<%}%>
+				<%else if (has(createDateTime_not)){%>
+						and A.createDateTime <> :createDateTime_not 
+				<%}%>
+				<%else if (has(createDateTime_li)){%>
+						and A.createDateTime like '%'||:createDateTime_li||'%' 
+				<%}%>
+				<%if (has(createDateTime_gt)){%>
+						and A.createDateTime>:createDateTime_gt 
+				<%}%>		
+				<%else if (has(createDateTime_ge)){%>
+						and A.createDateTime>=:createDateTime_ge
+				<%}%>		 
+				<%if (has(createDateTime_lt)){%>
+						and A.createDateTime<:createDateTime_lt 
+				<%}%>		
+				<%else if (has(createDateTime_le)){%>
+						and A.createDateTime<=:createDateTime_le 
+				<%}%>
 				<%if(has(extend)){%>
 					AND extend=:extend 
 				<%}%>
@@ -103,14 +155,95 @@
 				<%else if (has(extend_li)){%>
 						and A.extend like '%'||:extend_li||'%' 
 				<%}%>
-				<%if(has(personnelInfoId)){%>
-					AND personnelInfoId=:personnelInfoId 
+				<%if(has(phone)){%>
+					AND phone=:phone 
 				<%}%>
-				<%else if (has(personnelInfoId_not)){%>
-						and A.personnelInfoId <> :personnelInfoId_not 
+				<%else if (has(phone_not)){%>
+						and A.phone <> :phone_not 
 				<%}%>
-				<%else if (has(personnelInfoId_li)){%>
-						and A.personnelInfoId like '%'||:personnelInfoId_li||'%' 
+				<%else if (has(phone_li)){%>
+						and A.phone like '%'||:phone_li||'%' 
+				<%}%>
+				<%if(has(serviceStatus)){%>
+					AND serviceStatus=:serviceStatus 
+				<%}%>
+				<%else if (has(serviceStatus_not)){%>
+						and A.serviceStatus <> :serviceStatus_not 
+				<%}%>
+				<%else if (has(serviceStatus_li)){%>
+						and A.serviceStatus like '%'||:serviceStatus_li||'%' 
+				<%}%>
+				<%if (has(serviceStatus_gt)){%>
+						and A.serviceStatus>:serviceStatus_gt 
+				<%}%>		
+				<%else if (has(serviceStatus_ge)){%>
+						and A.serviceStatus>=:serviceStatus_ge
+				<%}%>		 
+				<%if (has(serviceStatus_lt)){%>
+						and A.serviceStatus<:serviceStatus_lt 
+				<%}%>		
+				<%else if (has(serviceStatus_le)){%>
+						and A.serviceStatus<=:serviceStatus_le 
+				<%}%>
+				<%if(has(tenantId)){%>
+					AND tenantId=:tenantId 
+				<%}%>
+				<%else if (has(tenantId_not)){%>
+						and A.tenantId <> :tenantId_not 
+				<%}%>
+				<%else if (has(tenantId_li)){%>
+						and A.tenantId like '%'||:tenantId_li||'%' 
+				<%}%>
+				<%if (has(tenantId_gt)){%>
+						and A.tenantId>:tenantId_gt 
+				<%}%>		
+				<%else if (has(tenantId_ge)){%>
+						and A.tenantId>=:tenantId_ge
+				<%}%>		 
+				<%if (has(tenantId_lt)){%>
+						and A.tenantId<:tenantId_lt 
+				<%}%>		
+				<%else if (has(tenantId_le)){%>
+						and A.tenantId<=:tenantId_le 
+				<%}%>
+				<%if(has(employer)){%>
+					AND employer=:employer 
+				<%}%>
+				<%else if (has(employer_not)){%>
+						and A.employer <> :employer_not 
+				<%}%>
+				<%else if (has(employer_li)){%>
+						and A.employer like '%'||:employer_li||'%' 
+				<%}%>
+				<%if(has(id)){%>
+					AND id=:id 
+				<%}%>
+				<%else if (has(id_not)){%>
+						and A.id <> :id_not 
+				<%}%>
+				<%else if (has(id_li)){%>
+						and A.id like '%'||:id_li||'%' 
+				<%}%>
+				<%if (has(id_gt)){%>
+						and A.id>:id_gt 
+				<%}%>		
+				<%else if (has(id_ge)){%>
+						and A.id>=:id_ge
+				<%}%>		 
+				<%if (has(id_lt)){%>
+						and A.id<:id_lt 
+				<%}%>		
+				<%else if (has(id_le)){%>
+						and A.id<=:id_le 
+				<%}%>
+				<%if(has(email)){%>
+					AND email=:email 
+				<%}%>
+				<%else if (has(email_not)){%>
+						and A.email <> :email_not 
+				<%}%>
+				<%else if (has(email_li)){%>
+						and A.email like '%'||:email_li||'%' 
 				<%}%>
 			<%if (has(orderby)) {%>
 					ORDER BY A.${orderby} 

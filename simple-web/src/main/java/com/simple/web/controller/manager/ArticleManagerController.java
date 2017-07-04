@@ -1,4 +1,4 @@
-package com.simple.web.controller.web;
+package com.simple.web.controller.manager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,37 +15,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.simple.core.model.LoginInfoModel;
 import com.simple.core.service.ArticleService;
 import com.simple.web.controller.AbstractController;
 
 /***
- * 文章查询接口
+ * 文章信息管理接口
  * 
  * @Title: simple-web
- * @Description:文章查询接口
+ * @Description:文章信息管理接口
  * @Company:
  * @Email: 20796698@qq.com
  * @author cheuk.bin.li
- * @date 2017年6月21日 下午4:28:18
+ * @date 2017年6月21日 下午5:06:57
  *
  */
 @Controller
 @Scope("prototype")
-@RequestMapping("/web/article/")
-public class ArticleController extends AbstractController {
+@RequestMapping("/manager/article/")
+public class ArticleManagerController extends AbstractController {
 
 	@Autowired
 	private ArticleService articleService;
 
-	/***
-	 * 
-	 * 根据ID查询
-	 * 
-	 * @param request
-	 * @param response
-	 * @param id
-	 * @return
-	 */
 	@ResponseBody
 	@RequestMapping(value = "get/{id}", method = { RequestMethod.GET })
 	public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
@@ -57,8 +49,6 @@ public class ArticleController extends AbstractController {
 	}
 
 	/***
-	 * 
-	 * 根据租户ID，文章、类型查询
 	 * 
 	 * @param params
 	 * @param tenantId 租户
@@ -75,6 +65,31 @@ public class ArticleController extends AbstractController {
 			params.put("tenantId", tenantId);
 			params.put("articleType", articleType);
 			return success(articleService.getpage(checkPageAndSize(params)));
+		} catch (Throwable e) {
+			return fail(e);
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "put", method = { RequestMethod.PUT })
+	public Object put(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
+		try {
+			LoginInfoModel loginInfoModel = getLoginInfo(request);
+			articleService.saveOrUpdate(loginInfoModel.getUser().getTenantId(), params);
+			return success();
+		} catch (Throwable e) {
+			return fail(e);
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "delete", method = { RequestMethod.DELETE })
+	public Object delete(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
+		try {
+			articleService.delete(getLoginInfo(request).getUser().getTenantId(), params);
+			return success();
 		} catch (Throwable e) {
 			return fail(e);
 		}

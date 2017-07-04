@@ -1,9 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QueryList SYSTEM "Query.dtd">
+<!--  
+{field}_li — like %?%
+{field}_lt —参数1是否小于参数2 <
+{field}_le —参数1是否小于等于参数2 <=
+{field}_gt —参数1是否大于参数2 >
+{field}_ge —参数1是否大于等于参数2 >=
+{field}_not 不等于<>
+orderby 是否排序
+sort:asc/desc
+  -->
 <QueryList package="com.simple.core.entity.PersonnelInfo">
 	<Alias name="com.simple.core.entity.PersonnelInfo" Alias="@PersonnelInfo@" />
 	<Join name="defaultWhereList">
 		<![CDATA[ 
+				<%if(has(lastUpdateDateTime)){%>
+					AND lastUpdateDateTime=:lastUpdateDateTime 
+				<%}%>
+				<%else if (has(lastUpdateDateTime_not)){%>
+						and A.lastUpdateDateTime <> :lastUpdateDateTime_not 
+				<%}%>
+				<%else if (has(lastUpdateDateTime_li)){%>
+						and A.lastUpdateDateTime like '%'||:lastUpdateDateTime_li||'%' 
+				<%}%>
+				<%if (has(lastUpdateDateTime_gt)){%>
+						and A.lastUpdateDateTime>:lastUpdateDateTime_gt 
+				<%}%>		
+				<%else if (has(lastUpdateDateTime_ge)){%>
+						and A.lastUpdateDateTime>=:lastUpdateDateTime_ge
+				<%}%>		 
+				<%if (has(lastUpdateDateTime_lt)){%>
+						and A.lastUpdateDateTime<:lastUpdateDateTime_lt 
+				<%}%>		
+				<%else if (has(lastUpdateDateTime_le)){%>
+						and A.lastUpdateDateTime<=:lastUpdateDateTime_le 
+				<%}%>
+				<%if(has(logicStatus)){%>
+					AND logicStatus=:logicStatus 
+				<%}%>
+				<%else if (has(logicStatus_not)){%>
+						and A.logicStatus <> :logicStatus_not 
+				<%}%>
+				<%else if (has(logicStatus_li)){%>
+						and A.logicStatus like '%'||:logicStatus_li||'%' 
+				<%}%>
+				<%if (has(logicStatus_gt)){%>
+						and A.logicStatus>:logicStatus_gt 
+				<%}%>		
+				<%else if (has(logicStatus_ge)){%>
+						and A.logicStatus>=:logicStatus_ge
+				<%}%>		 
+				<%if (has(logicStatus_lt)){%>
+						and A.logicStatus<:logicStatus_lt 
+				<%}%>		
+				<%else if (has(logicStatus_le)){%>
+						and A.logicStatus<=:logicStatus_le 
+				<%}%>
 				<%if(has(address)){%>
 					AND address=:address 
 				<%}%>
@@ -12,6 +64,123 @@
 				<%}%>
 				<%else if (has(address_li)){%>
 						and A.address like '%'||:address_li||'%' 
+				<%}%>
+				<%if(has(idCard)){%>
+					AND idCard=:idCard 
+				<%}%>
+				<%else if (has(idCard_not)){%>
+						and A.idCard <> :idCard_not 
+				<%}%>
+				<%else if (has(idCard_li)){%>
+						and A.idCard like '%'||:idCard_li||'%' 
+				<%}%>
+				<%if(has(sex)){%>
+					AND sex=:sex 
+				<%}%>
+				<%else if (has(sex_not)){%>
+						and A.sex <> :sex_not 
+				<%}%>
+				<%else if (has(sex_li)){%>
+						and A.sex like '%'||:sex_li||'%' 
+				<%}%>
+				<%if (has(sex_gt)){%>
+						and A.sex>:sex_gt 
+				<%}%>		
+				<%else if (has(sex_ge)){%>
+						and A.sex>=:sex_ge
+				<%}%>		 
+				<%if (has(sex_lt)){%>
+						and A.sex<:sex_lt 
+				<%}%>		
+				<%else if (has(sex_le)){%>
+						and A.sex<=:sex_le 
+				<%}%>
+				<%if(has(origin)){%>
+					AND origin=:origin 
+				<%}%>
+				<%else if (has(origin_not)){%>
+						and A.origin <> :origin_not 
+				<%}%>
+				<%else if (has(origin_li)){%>
+						and A.origin like '%'||:origin_li||'%' 
+				<%}%>
+				<%if(has(remark)){%>
+					AND remark=:remark 
+				<%}%>
+				<%else if (has(remark_not)){%>
+						and A.remark <> :remark_not 
+				<%}%>
+				<%else if (has(remark_li)){%>
+						and A.remark like '%'||:remark_li||'%' 
+				<%}%>
+				<%if(has(pic)){%>
+					AND pic=:pic 
+				<%}%>
+				<%else if (has(pic_not)){%>
+						and A.pic <> :pic_not 
+				<%}%>
+				<%else if (has(pic_li)){%>
+						and A.pic like '%'||:pic_li||'%' 
+				<%}%>
+				<%if(has(createDateTime)){%>
+					AND createDateTime=:createDateTime 
+				<%}%>
+				<%else if (has(createDateTime_not)){%>
+						and A.createDateTime <> :createDateTime_not 
+				<%}%>
+				<%else if (has(createDateTime_li)){%>
+						and A.createDateTime like '%'||:createDateTime_li||'%' 
+				<%}%>
+				<%if (has(createDateTime_gt)){%>
+						and A.createDateTime>:createDateTime_gt 
+				<%}%>		
+				<%else if (has(createDateTime_ge)){%>
+						and A.createDateTime>=:createDateTime_ge
+				<%}%>		 
+				<%if (has(createDateTime_lt)){%>
+						and A.createDateTime<:createDateTime_lt 
+				<%}%>		
+				<%else if (has(createDateTime_le)){%>
+						and A.createDateTime<=:createDateTime_le 
+				<%}%>
+				<%if(has(extend)){%>
+					AND extend=:extend 
+				<%}%>
+				<%else if (has(extend_not)){%>
+						and A.extend <> :extend_not 
+				<%}%>
+				<%else if (has(extend_li)){%>
+						and A.extend like '%'||:extend_li||'%' 
+				<%}%>
+				<%if(has(phone)){%>
+					AND phone=:phone 
+				<%}%>
+				<%else if (has(phone_not)){%>
+						and A.phone <> :phone_not 
+				<%}%>
+				<%else if (has(phone_li)){%>
+						and A.phone like '%'||:phone_li||'%' 
+				<%}%>
+				<%if(has(tenantId)){%>
+					AND tenantId=:tenantId 
+				<%}%>
+				<%else if (has(tenantId_not)){%>
+						and A.tenantId <> :tenantId_not 
+				<%}%>
+				<%else if (has(tenantId_li)){%>
+						and A.tenantId like '%'||:tenantId_li||'%' 
+				<%}%>
+				<%if (has(tenantId_gt)){%>
+						and A.tenantId>:tenantId_gt 
+				<%}%>		
+				<%else if (has(tenantId_ge)){%>
+						and A.tenantId>=:tenantId_ge
+				<%}%>		 
+				<%if (has(tenantId_lt)){%>
+						and A.tenantId<:tenantId_lt 
+				<%}%>		
+				<%else if (has(tenantId_le)){%>
+						and A.tenantId<=:tenantId_le 
 				<%}%>
 				<%if(has(name)){%>
 					AND name=:name 
@@ -31,59 +200,17 @@
 				<%else if (has(id_li)){%>
 						and A.id like '%'||:id_li||'%' 
 				<%}%>
-				<%if(has(tenantId)){%>
-					AND tenantId=:tenantId 
-				<%}%>
-				<%else if (has(tenantId_not)){%>
-						and A.tenantId <> :tenantId_not 
-				<%}%>
-				<%else if (has(tenantId_li)){%>
-						and A.tenantId like '%'||:tenantId_li||'%' 
-				<%}%>
-				<%if(has(phone)){%>
-					AND phone=:phone 
-				<%}%>
-				<%else if (has(phone_not)){%>
-						and A.phone <> :phone_not 
-				<%}%>
-				<%else if (has(phone_li)){%>
-						and A.phone like '%'||:phone_li||'%' 
-				<%}%>
-				<%if(has(remark)){%>
-					AND remark=:remark 
-				<%}%>
-				<%else if (has(remark_not)){%>
-						and A.remark <> :remark_not 
-				<%}%>
-				<%else if (has(remark_li)){%>
-						and A.remark like '%'||:remark_li||'%' 
-				<%}%>
-				<%if(has(extend)){%>
-					AND extend=:extend 
-				<%}%>
-				<%else if (has(extend_not)){%>
-						and A.extend <> :extend_not 
-				<%}%>
-				<%else if (has(extend_li)){%>
-						and A.extend like '%'||:extend_li||'%' 
-				<%}%>
-				<%if(has(sex)){%>
-					AND sex=:sex 
-				<%}%>
-				<%else if (has(sex_not)){%>
-						and A.sex <> :sex_not 
-				<%}%>
-				<%else if (has(sex_li)){%>
-						and A.sex like '%'||:sex_li||'%' 
-				<%}%>
-				<%if(has(idCard)){%>
-					AND idCard=:idCard 
-				<%}%>
-				<%else if (has(idCard_not)){%>
-						and A.idCard <> :idCard_not 
-				<%}%>
-				<%else if (has(idCard_li)){%>
-						and A.idCard like '%'||:idCard_li||'%' 
+				<%if (has(id_gt)){%>
+						and A.id>:id_gt 
+				<%}%>		
+				<%else if (has(id_ge)){%>
+						and A.id>=:id_ge
+				<%}%>		 
+				<%if (has(id_lt)){%>
+						and A.id<:id_lt 
+				<%}%>		
+				<%else if (has(id_le)){%>
+						and A.id<=:id_le 
 				<%}%>
 				<%if(has(position)){%>
 					AND position=:position 
@@ -94,23 +221,17 @@
 				<%else if (has(position_li)){%>
 						and A.position like '%'||:position_li||'%' 
 				<%}%>
-				<%if(has(pic)){%>
-					AND pic=:pic 
-				<%}%>
-				<%else if (has(pic_not)){%>
-						and A.pic <> :pic_not 
-				<%}%>
-				<%else if (has(pic_li)){%>
-						and A.pic like '%'||:pic_li||'%' 
-				<%}%>
-				<%if(has(origin)){%>
-					AND origin=:origin 
-				<%}%>
-				<%else if (has(origin_not)){%>
-						and A.origin <> :origin_not 
-				<%}%>
-				<%else if (has(origin_li)){%>
-						and A.origin like '%'||:origin_li||'%' 
+				<%if (has(position_gt)){%>
+						and A.position>:position_gt 
+				<%}%>		
+				<%else if (has(position_ge)){%>
+						and A.position>=:position_ge
+				<%}%>		 
+				<%if (has(position_lt)){%>
+						and A.position<:position_lt 
+				<%}%>		
+				<%else if (has(position_le)){%>
+						and A.position<=:position_le 
 				<%}%>
 			<%if (has(orderby)) {%>
 					ORDER BY A.${orderby} 

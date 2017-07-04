@@ -1,5 +1,6 @@
 package com.simple.web.controller.manager;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,44 +15,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.simple.core.entity.Authority;
 import com.simple.core.model.LoginInfoModel;
-import com.simple.core.service.ArticleService;
+import com.simple.core.service.AuthorityService;
 import com.simple.web.controller.AbstractController;
 
 @Controller
 @Scope("prototype")
-@RequestMapping("/manager/article/")
-public class ArticleController extends AbstractController {
+@RequestMapping("/manager/authority/")
+public class AuthorityManagerController extends AbstractController {
 
 	@Autowired
-	private ArticleService articleService;
+	private AuthorityService authorityService;
 
 	@ResponseBody
 	@RequestMapping(value = "get/{id}", method = { RequestMethod.GET })
 	public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
 		try {
-			return success(articleService.getByPk(id));
+			return success(authorityService.getByPk(id));
 		} catch (Throwable e) {
 			return fail(e);
 		}
 	}
 
-	/***
-	 * 
-	 * @param params
-	 * @param tenantId 租户
-	 * @param articleType 文章类型
-	 * @param request
-	 * @param response
-	 * @return
-	 */
 	@ResponseBody
-	@RequestMapping(value = "getlist/by/{tenantId}/for/{articleType}", method = { RequestMethod.POST })
-	public Object getList(@RequestBody Map<String, Object> params, @PathVariable("tenantId") Long tenantId, @PathVariable("articleType") Integer articleType, HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "getlist", method = { RequestMethod.POST })
+	public Object getList(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
-			params.put("tenantId", tenantId);
-			params.put("articleType", articleType);
-			return success(articleService.getpage(checkPageAndSize(params)));
+			return success(authorityService.getpage(checkPageAndSize(params)));
 		} catch (Throwable e) {
 			return fail(e);
 		}
@@ -59,10 +51,12 @@ public class ArticleController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "put", method = { RequestMethod.PUT })
-	public Object put(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object put(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			LoginInfoModel loginInfoModel = getLoginInfo(request);
-			articleService.saveOrUpdate(loginInfoModel.getUser().getTenantId(), params);
+			params.put("tenantId", loginInfoModel.getUser().getTenantId());
+			authorityService.saveOrUpdate(fillObject(new Authority(), params));
 			return success();
 		} catch (Throwable e) {
 			return fail(e);
@@ -71,9 +65,10 @@ public class ArticleController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "delete", method = { RequestMethod.DELETE })
-	public Object delete(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object delete(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
-			articleService.delete(getLoginInfo(request).getUser().getTenantId(), params);
+			authorityService.delete(params);
 			return success();
 		} catch (Throwable e) {
 			return fail(e);

@@ -4,9 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.cheuks.bin.original.common.dbmanager.BaseEntity;
+import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
+ * 租户信息
  * 
  * @Title: simple-core
  * @Description: 租户信息
@@ -17,20 +18,32 @@ import com.cheuks.bin.original.common.dbmanager.BaseEntity;
  *
  */
 @Entity(name = "simple_tenant")
-public class Tenant extends BaseEntity {
+public class Tenant extends DefaultBaseEntity {
 
 	private static final long serialVersionUID = -1397924514367022211L;
 
 	@Id
 	private Long id;
+	/***
+	 * 公司名
+	 */
 	@Column(length = 64, name = "tenant_name")
-	private String tenantName;//公司名
+	private String tenantName;
+	/***
+	 * 联系人
+	 */
 	@Column(length = 32)
-	private String contact;//联系人
+	private String contact;
+	/***
+	 * 电话
+	 */
 	@Column(length = 32)
-	private String phone;//电话
+	private String phone;
+	/***
+	 * 备注
+	 */
 	@Column(length = 512)
-	private String remark;//备注
+	private String remark;
 
 	public Long getId() {
 		return id;

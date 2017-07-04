@@ -4,10 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.cheuks.bin.original.common.dbmanager.BaseEntity;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
+
+import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
- * 
+ * K/V扩展对象表(通用数据表)
  * @Title: simple-core
  * @Description:K/V扩展对象表
  * @Company:
@@ -16,11 +19,10 @@ import com.cheuks.bin.original.common.dbmanager.BaseEntity;
  * @date 2017年6月3日 上午11:07:56
  *
  */
+@SuppressWarnings("deprecation")
 @Entity(name = "simple_key_value_extend")
-//@Table(name = "simple_key_value_extend", indexes = {
-//		@Index(columnList = "core", name = "key_value_extend_core_index")
-//})
-public class KeyValueExtend extends BaseEntity {
+@Table(appliesTo = "simple_key_value_extend", indexes = { @Index(columnNames = "core", name = "key_value_extend_core_index") })
+public class KeyValueExtend extends DefaultBaseEntity {
 
 	/**
 	 * 
@@ -29,12 +31,24 @@ public class KeyValueExtend extends BaseEntity {
 	@Id
 	private Long id;
 	@Column(nullable = false, name = "tenant_id")
-	private Long tenantId;//租户ID
-	@Column(length = 32)
-	private String name;//名称
-	private String core;//key/类型
+	/***
+	 * 租户ID
+	 */
+	private Long tenantId;
+	/***
+	 * 名称
+	 */
+	@Column(length = 64)
+	private String name;
+	/***
+	 * key/类型
+	 */
+	private String core;
 	@Column(length = 102400)
-	private String content;//value/内容
+	/***
+	 * value/内容
+	 */
+	private String content;
 
 	public Long getId() {
 		return id;

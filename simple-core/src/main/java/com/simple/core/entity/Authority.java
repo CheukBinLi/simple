@@ -4,9 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.cheuks.bin.original.common.dbmanager.BaseEntity;
+import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
+ * 权限
  * 
  * @Title: simple-core
  * @Description: 权限
@@ -17,17 +18,26 @@ import com.cheuks.bin.original.common.dbmanager.BaseEntity;
  *
  */
 @Entity(name = "simple_authority")
-public class Authority extends BaseEntity {
+public class Authority extends DefaultBaseEntity {
 
 	private static final long serialVersionUID = 4856571139294637864L;
 
 	@Id
 	private Long id;
+	/***
+	 * 权限名称
+	 */
 	@Column(length = 64)
-	private String name;//权限名称
+	private String name;
+	/***
+	 * 拦截路径
+	 */
 	@Column(length = 256, name = "filter_path")
-	private String filterPath;//拦截路径
-	private Boolean activit;//启用开/关
+	private String filterPath;
+	/***
+	 * 启用开/关
+	 */
+	private Boolean activit;
 
 	public Long getId() {
 		return id;

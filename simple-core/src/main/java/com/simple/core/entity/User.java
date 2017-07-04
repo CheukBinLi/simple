@@ -4,9 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.cheuks.bin.original.common.dbmanager.BaseEntity;
+import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
+ * 登录用户信息表
  * 
  * @Title: simple-core
  * @Description: 登录用户信息表
@@ -17,24 +18,42 @@ import com.cheuks.bin.original.common.dbmanager.BaseEntity;
  *
  */
 @Entity(name = "simple_user")
-public class User extends BaseEntity {
+public class User extends DefaultBaseEntity {
 
 	private static final long serialVersionUID = -668934565870548312L;
 
 	@Id
 	private Long id;
+	/***
+	 * 租户ID
+	 */
 	@Column(name = "tenant_id")
-	private Long tenantId;//租户ID
+	private Long tenantId;
+	/***
+	 * 权限组ID
+	 */
 	@Column(name = "authority_group_id")
-	private Long authorityGroupId;//权限组ID
+	private Long authorityGroupId;
+	/***
+	 * 用户信息关联
+	 */
 	@Column(name = "personnel_info_id")
-	private Long personnelInfoId;//用户信息关联
+	private Long personnelInfoId;
+	/***
+	 * 登录名
+	 */
 	@Column(name = "user_name")
-	private String userName;//登录名
+	private String userName;
+	/***
+	 * 密码(转加密码)
+	 */
 	@Column(length = 64)
-	private String password;//密码(转加密码)
+	private String password;
+	/***
+	 * 用户状态(0:使用,1:停用)' default 0
+	 */
 	@Column(length = 1)
-	private Integer status;//用户状态(0:使用,1:停用)' default 0
+	private Integer status = 0;
 
 	public Long getId() {
 		return id;

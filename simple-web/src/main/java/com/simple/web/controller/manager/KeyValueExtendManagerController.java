@@ -1,6 +1,6 @@
 package com.simple.web.controller.manager;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,22 +16,33 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simple.core.model.LoginInfoModel;
-import com.simple.core.service.PersonnelInfoService;
+import com.simple.core.service.KeyValueExtendService;
 import com.simple.web.controller.AbstractController;
 
+/***
+ * 通用数据管理接口
+ * 
+ * @Title: simple-web
+ * @Description: 通用数据管理接口
+ * @Company:
+ * @Email: 20796698@qq.com
+ * @author cheuk.bin.li
+ * @date 2017年6月21日 下午5:05:57
+ *
+ */
 @Controller
 @Scope("prototype")
-@RequestMapping("/manager/personnelInfo/")
-public class PersonnelInfoController extends AbstractController {
+@RequestMapping("/manager/keyValueExtend/")
+public class KeyValueExtendManagerController extends AbstractController {
 
 	@Autowired
-	private PersonnelInfoService personnelInfoService;
+	private KeyValueExtendService keyValueExtendService;
 
 	@ResponseBody
 	@RequestMapping(value = "get/{id}", method = { RequestMethod.GET })
 	public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
 		try {
-			return success(personnelInfoService.getByPk(id));
+			return success(keyValueExtendService.getByPk(id));
 		} catch (Throwable e) {
 			return fail(e);
 		}
@@ -39,10 +50,11 @@ public class PersonnelInfoController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "getlist/by/{tenantId}", method = { RequestMethod.POST })
-	public Object getList(@RequestBody Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
+	public Object getList(@RequestBody(required = false) Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			params.put("tenantId", tenantId);
-			return success(personnelInfoService.getpage(checkPageAndSize(params)));
+			return success(keyValueExtendService.getpage(checkPageAndSize(params)));
 		} catch (Throwable e) {
 			return fail(e);
 		}
@@ -50,14 +62,11 @@ public class PersonnelInfoController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "put", method = { RequestMethod.PUT })
-	public Object put(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object put(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			LoginInfoModel loginInfoModel = getLoginInfo(request);
-			boolean isUpload;
-			String savePath = (isUpload = params.containsKey("id")) ? params.get("pic").toString() : String.format("upload/%d/%d", loginInfoModel.getUser().getTenantId(), loginInfoModel.getUser().getTenantId());
-			List<String> uploadFile = uploadFile(request, savePath, isUpload);
-			params.put("pic", uploadFile.get(0));//第0张图片
-			personnelInfoService.saveOrUpdate(loginInfoModel.getUser().getTenantId(), params);
+			keyValueExtendService.saveOrUpdate(loginInfoModel.getUser().getTenantId(), params);
 			return success();
 		} catch (Throwable e) {
 			return fail(e);
@@ -66,12 +75,14 @@ public class PersonnelInfoController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "delete", method = { RequestMethod.DELETE })
-	public Object delete(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object delete(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
-			personnelInfoService.delete(getLoginInfo(request).getUser().getTenantId(), params);
+			keyValueExtendService.delete(getLoginInfo(request).getUser().getTenantId(), params);
 			return success();
 		} catch (Throwable e) {
 			return fail(e);
 		}
 	}
+
 }

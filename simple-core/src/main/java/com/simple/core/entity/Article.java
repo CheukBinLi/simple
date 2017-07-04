@@ -4,9 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.cheuks.bin.original.common.dbmanager.BaseEntity;
+import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
+ * 文章信息表
  * 
  * @Title: simple-core
  * @Description: 文章信息表
@@ -17,7 +18,7 @@ import com.cheuks.bin.original.common.dbmanager.BaseEntity;
  *
  */
 @Entity(name = "simple_article")
-public class Article extends BaseEntity {
+public class Article extends DefaultBaseEntity {
 
 	/**
 	 * 
@@ -26,18 +27,36 @@ public class Article extends BaseEntity {
 
 	@Id
 	private Long id;
+	/***
+	 * 租户ID
+	 */
 	@Column(nullable = false, name = "tenant_id")
-	private Long tenantId;//租户ID
+	private Long tenantId;
+	/***
+	 * 标题
+	 */
 	@Column(length = 64)
-	private String title;//标题
+	private String title;
+	/***
+	 * 文章类型
+	 */
 	@Column(length = 1, name = "article_type")
-	private Integer articleType;//文章类型
+	private Integer articleType;
+	/***
+	 * 查看次数
+	 */
 	@Column(name = "viewed_count")
-	private Long viewedCount;//查看次数
+	private Long viewedCount;
+	/***
+	 * 文章内容
+	 */
 	@Column(length = 102400)
-	private String content;//文章内容
+	private String content;
+	/***
+	 * 扩展参数
+	 */
 	@Column(length = 1024)
-	private String extend;//扩展参数
+	private String extend;
 
 	public Long getId() {
 		return id;

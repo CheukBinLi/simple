@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.cheuks.bin.original.common.dbmanager.dao.BaseDao;
 import com.cheuks.bin.original.common.dbmanager.service.AbstractService;
+import com.cheuks.bin.original.common.util.CollectionUtil;
 import com.simple.core.dao.ArticleDao;
 import com.simple.core.entity.Article;
 import com.simple.core.service.ArticleService;
@@ -26,16 +27,18 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
 	public void saveOrUpdate(Long tenantId, Map<String, Object> params) throws Throwable {
 		params.put("tenantId", tenantId);
 		Article article;
-		if (params.containsKey("id")) ;
-		{
-			List<Article> list = getList(params);
+		if (params.containsKey("id")) {
+			Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", params.remove("id"), "tenantId", tenantId });
+			List<Article> list = getList(tempParams);
 			if (null != list && list.size() == 1) {
 				article = list.get(0);
 				article = fillObject(article, params);
 				articleDao.update(article);
+				return;
 			}
+			throw new RuntimeException("can't found data for id is " + tempParams.get("id") + " and tenantId is " + tenantId);
 		}
-		articleDao.save(fillObject(new Article(), params));
+		articleDao.save(fillObject(new Article().setId(generateId()), params));
 	}
 
 	public void update(Long tenantId, Map<String, Object> params) throws Throwable {

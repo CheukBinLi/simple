@@ -1,5 +1,6 @@
 package com.simple.web.controller.manager;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ import com.simple.web.controller.AbstractController;
 @Controller
 @Scope("prototype")
 @RequestMapping("/manager/user/")
-public class UserController extends AbstractController {
+public class UserManagerController extends AbstractController {
 
 	@Autowired
 	private UserService userService;
@@ -39,7 +40,8 @@ public class UserController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "getlist", method = { RequestMethod.POST })
-	public Object getList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
+	public Object getList(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			return success(userService.getpage(checkPageAndSize(params)));
 		} catch (Throwable e) {
@@ -49,7 +51,8 @@ public class UserController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "put", method = { RequestMethod.PUT })
-	public Object put(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object put(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			LoginInfoModel loginInfoModel = getLoginInfo(request);
 			User user = fillObject(new User(), params);
@@ -61,22 +64,23 @@ public class UserController extends AbstractController {
 		}
 	}
 
-//	@ResponseBody
-//	@RequestMapping(value = "login", method = { RequestMethod.POST })
-//	public Object login(HttpServletRequest request, HttpServletResponse response, @RequestParam("userName") String userName, @RequestParam("password") String password) {
-//		try {
-//			User user = fillObject(new User(), params);
-//			user.setTenantId(loginInfoModel.getUser().getTenantId());
-//			userService.saveOrUpdate(user);
-//			return success();
-//		} catch (Throwable e) {
-//			return fail(e);
-//		}
-//	}
+	//	@ResponseBody
+	//	@RequestMapping(value = "login", method = { RequestMethod.POST })
+	//	public Object login(HttpServletRequest request, HttpServletResponse response, @RequestParam("userName") String userName, @RequestParam("password") String password) {
+	//		try {
+	//			User user = fillObject(new User(), params);
+	//			user.setTenantId(loginInfoModel.getUser().getTenantId());
+	//			userService.saveOrUpdate(user);
+	//			return success();
+	//		} catch (Throwable e) {
+	//			return fail(e);
+	//		}
+	//	}
 
 	@ResponseBody
 	@RequestMapping(value = "delete", method = { RequestMethod.DELETE })
-	public Object delete(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public Object delete(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			userService.delete(params);
 			return success();

@@ -4,9 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.cheuks.bin.original.common.dbmanager.BaseEntity;
+import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
+ * 人员信息表
  * 
  * @Title: simple-core
  * @Description: 人员信息表
@@ -17,33 +18,60 @@ import com.cheuks.bin.original.common.dbmanager.BaseEntity;
  *
  */
 @Entity(name = "simple_personnel_info")
-public class PersonnelInfo extends BaseEntity {
+public class PersonnelInfo extends DefaultBaseEntity {
 
 	private static final long serialVersionUID = 6880608434674103212L;
 	@Id
 	private Long id;
+	/***
+	 * 租户ID
+	 */
 	@Column(nullable = false, name = "tenant_id")
-	private Long tenantId;//租户ID
+	private Long tenantId;
+	/***
+	 * 姓名
+	 */
 	@Column(length = 64)
-	private String name;//姓名
+	private String name;
+	/***
+	 * 姓别
+	 */
 	@Column(length = 1)
-	private Integer sex = 0;//姓别
+	private Integer sex = 0;
+	/***
+	 * 图片路径
+	 */
 	@Column(length = 256)
-	private String pic;//图片
+	private String pic;
 	@Column(length = 64)
 	private String phone;
 	@Column(length = 64)
 	private String address;
+	/***
+	 * 身份证号
+	 */
 	@Column(length = 20, name = "id_card")
-	private String idCard;//身份证号
+	private String idCard;
+	/**
+	 * 籍贯
+	 */
 	@Column(length = 32)
-	private String origin;//籍贯
+	private String origin;
+	/***
+	 * 职位
+	 */
 	@Column(length = 1)
-	private Integer position;//职位
+	private Integer position;
+	/***
+	 * 备注,描述
+	 */
 	@Column(length = 512)
-	private String remark;//备注,描述
+	private String remark;
+	/***
+	 * 扩展
+	 */
 	@Column(length = 512)
-	private String extend;//扩展
+	private String extend;
 
 	public Long getId() {
 		return id;

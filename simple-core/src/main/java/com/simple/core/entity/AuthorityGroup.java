@@ -6,9 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.cheuks.bin.original.common.dbmanager.BaseEntity;
+import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
+ * 权限组
  * 
  * @Title: simple-core
  * @Description: 权限组
@@ -19,16 +20,24 @@ import com.cheuks.bin.original.common.dbmanager.BaseEntity;
  *
  */
 @Entity(name = "simple_authority_group")
-public class AuthorityGroup extends BaseEntity {
+public class AuthorityGroup extends DefaultBaseEntity {
 
 	private static final long serialVersionUID = -3868766379525670107L;
 
 	@Id
 	private Long id;
+	/***
+	 * 权限组名称
+	 */
 	@Column(length = 64)
-	private String name;//权限组名称
+	private String name;
 
-	//不同步
+	/***
+	 * 程序使用，无此字段
+	 * <p>
+	 * 当前权限组内所有权限列表
+	 * </p>
+	 */
 	private transient List<Authority> authorities;
 
 	public Long getId() {
