@@ -26,6 +26,11 @@
 						<property name="serializationInclusion">
 							<value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
 						</property>
+						<property name="dateFormat">
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+							</bean>
+						</property>
 					</bean>
 				</property>
 			</bean>
