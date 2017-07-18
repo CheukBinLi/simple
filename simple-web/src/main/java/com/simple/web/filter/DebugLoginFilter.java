@@ -16,31 +16,33 @@ import com.simple.core.util.SimpleConstant;
 
 public class DebugLoginFilter implements Filter, SimpleConstant {
 
-	public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) throws ServletException {
 
-	}
+    }
 
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-		Object tenantId;
-		LoginInfoModel loginInfoModel;
-		Object tempValue;
-		if (null == (tempValue = httpServletRequest.getSession().getAttribute(SESSION_LOGIN_INFO))) {
-			User user = new User();
-			tenantId = request.getParameter("tenantId");
-			user.setUserName("DebugAdmin");
-			user.setTenantId((Long) (null == tenantId ? 110120130L : tenantId));
-			httpServletRequest.getSession().setAttribute(SESSION_LOGIN_INFO, tempValue = new LoginInfoModel().setUser(user));
-		}
-		loginInfoModel = (LoginInfoModel) tempValue;
-		if (null != (tenantId = request.getParameter("tenantId"))) {
-			httpServletRequest.getSession().setAttribute(SESSION_LOGIN_INFO, loginInfoModel.getUser().setTenantId((Long) tenantId));
-		}
-		chain.doFilter(request, response);
-	}
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        Object tenantId;
+        LoginInfoModel loginInfoModel;
+        Object tempValue;
+        if (null == (tempValue = httpServletRequest.getSession().getAttribute(SESSION_LOGIN_INFO))) {
+            User user = new User();
+            tenantId = request.getParameter("tenantId");
+            user.setUserName("DebugAdmin");
+            if (null != tenantId) {
+                user.setTenantId((null == tenantId ? 110120130L : Long.valueOf(tenantId.toString())));
+            }
+            httpServletRequest.getSession().setAttribute(SESSION_LOGIN_INFO, tempValue = new LoginInfoModel().setUser(user));
+        }
+        loginInfoModel = (LoginInfoModel) tempValue;
+        if (null != (tenantId = request.getParameter("tenantId"))) {
+            loginInfoModel.getUser().setTenantId(Long.valueOf(tenantId.toString()));
+            httpServletRequest.getSession().setAttribute(SESSION_LOGIN_INFO, loginInfoModel);
+        }
+        chain.doFilter(request, response);
+    }
 
-	public void destroy() {
+    public void destroy() {
 
-	}
-
+    }
 }

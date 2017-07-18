@@ -1,7 +1,6 @@
 package com.simple.web.controller.web;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cheuks.bin.original.common.web.common.model.UploadFileModel;
-import com.simple.core.model.LoginInfoModel;
 import com.simple.core.service.GalleryService;
 import com.simple.web.controller.AbstractController;
 
@@ -74,63 +71,8 @@ public class GalleryController extends AbstractController {
         params = null == params ? new HashMap<String, Object>() : params;
         try {
             params.put("tenantId", tenantId);
-            return success(galleryService.getpage(checkPageAndSize(params)));
-        } catch (Throwable e) {
-            return fail(e);
-        }
-    }
-
-    /***
-     * 添加图片列表
-     * 
-     * @param params
-     * @param request
-     * @param response
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "put", method = { RequestMethod.POST })
-    public Object put(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            LoginInfoModel loginInfoModel = getLoginInfo(request);
-            String savePath = String.format("upload/gallery/%d", loginInfoModel.getUser().getTenantId());
-            List<UploadFileModel> uploadFiles = uploadFile(request, savePath, false);
-            galleryService.save(loginInfoModel.getUser().getTenantId(), uploadFiles);
-            return success();
-        } catch (Throwable e) {
-            return fail(e);
-        }
-    }
-
-    /***
-     * 添加图片列表
-     * 
-     * @param params 必传参数：id/path
-     * @param request
-     * @param response
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "update", method = { RequestMethod.POST })
-    public Object update(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> params = getParams(request);
-        if (!params.containsKey("id")) {
-            return fail("can't found id param", null);
-        }
-        if (!params.containsKey("path")) {
-            return fail("can't found path param.", null);
-        }
-        try {
-            LoginInfoModel loginInfoModel = getLoginInfo(request);
-
-            List<UploadFileModel> uploadFiles = uploadFile(request, params.get("path").toString(), true);
-            UploadFileModel uploadFile = uploadFiles.get(0);
-            params.put("id", Long.valueOf(params.get("id").toString()));
-            params.put("name", uploadFile.getName());
-            params.put("size", uploadFile.getSize());
-            params.put("path", uploadFile.getPath());
-            galleryService.update(loginInfoModel.getUser().getTenantId(), params);
-            return success();
+            Object o = galleryService.getpage(checkPageAndSize(cleanEmptyObject(params, true, null)));
+            return success(o);
         } catch (Throwable e) {
             return fail(e);
         }

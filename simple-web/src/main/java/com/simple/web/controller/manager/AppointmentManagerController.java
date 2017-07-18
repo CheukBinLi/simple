@@ -36,54 +36,54 @@ import com.simple.web.controller.AbstractController;
 @RequestMapping("/manager/appointment/")
 public class AppointmentManagerController extends AbstractController {
 
-	@Autowired
-	private AppointmentService appointmentService;
+    @Autowired
+    private AppointmentService appointmentService;
 
-	@ResponseBody
-	@RequestMapping(value = "get/{id}", method = { RequestMethod.GET, RequestMethod.POST })
-	public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
-		try {
-			Appointment appointment = appointmentService.getByPk(id);
-			return success(appointment);
-		} catch (Throwable e) {
-			return fail(e);
-		}
-	}
+    @ResponseBody
+    @RequestMapping(value = "get/{id}", method = { RequestMethod.GET, RequestMethod.POST })
+    public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
+        try {
+            Appointment appointment = appointmentService.getByPk(id);
+            return success(appointment);
+        } catch (Throwable e) {
+            return fail(e);
+        }
+    }
 
-	@ResponseBody
-	@RequestMapping(value = "getlist/by/{tenantId}", method = { RequestMethod.POST })
-	public Object getList(@RequestBody Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			params.put("tenantId", tenantId);
-			return success(appointmentService.getpage(checkPageAndSize(params)));
-		} catch (Throwable e) {
-			return fail(e);
-		}
-	}
+    @ResponseBody
+    @RequestMapping(value = "getlist/by/{tenantId}", method = { RequestMethod.POST })
+    public Object getList(@RequestBody Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            params.put("tenantId", tenantId);
+            return success(appointmentService.getpage(checkPageAndSize(checkDateTimeObject(params, null,true))));
+        } catch (Throwable e) {
+            return fail(e);
+        }
+    }
 
-	@ResponseBody
-	@RequestMapping(value = "put", method = { RequestMethod.PUT })
-	public Object put(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
-		params = null == params ? new HashMap<String, Object>() : params;
-		LoginInfoModel loginInfoModel = getLoginInfo(request);
-		try {
-			appointmentService.saveOrUpdate(loginInfoModel.getUser().getTenantId(), params);
-			return success();
-		} catch (Throwable e) {
-			return fail(e);
-		}
-	}
+    @ResponseBody
+    @RequestMapping(value = "put", method = { RequestMethod.PUT })
+    public Object put(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+        params = null == params ? new HashMap<String, Object>() : params;
+        LoginInfoModel loginInfoModel = getLoginInfo(request);
+        try {
+            appointmentService.saveOrUpdate(loginInfoModel.getUser().getTenantId(), params);
+            return success();
+        } catch (Throwable e) {
+            return fail(e);
+        }
+    }
 
-	@ResponseBody
-	@RequestMapping(value = "delete", method = { RequestMethod.DELETE })
-	public Object delete(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
-		params = null == params ? new HashMap<String, Object>() : params;
-		try {
-			appointmentService.delete(getLoginInfo(request).getUser().getTenantId(), params);
-			return success();
-		} catch (Throwable e) {
-			return fail(e);
-		}
-	}
+    @ResponseBody
+    @RequestMapping(value = "delete", method = { RequestMethod.DELETE })
+    public Object delete(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+        params = null == params ? new HashMap<String, Object>() : params;
+        try {
+            appointmentService.delete(getLoginInfo(request).getUser().getTenantId(), params);
+            return success();
+        } catch (Throwable e) {
+            return fail(e);
+        }
+    }
 
 }

@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
@@ -17,6 +19,7 @@ import com.cheuks.bin.original.db.DefaultBaseEntity;
  * @date 2017年6月3日 上午11:40:35
  *
  */
+@DynamicInsert(true)
 @Entity(name = "simple_tenant")
 public class Tenant extends DefaultBaseEntity {
 

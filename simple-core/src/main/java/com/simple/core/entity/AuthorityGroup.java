@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
@@ -19,61 +21,63 @@ import com.cheuks.bin.original.db.DefaultBaseEntity;
  * @date 2017年6月3日 上午11:04:40
  *
  */
+@DynamicInsert(true)
 @Entity(name = "simple_authority_group")
 public class AuthorityGroup extends DefaultBaseEntity {
 
-	private static final long serialVersionUID = -3868766379525670107L;
+    private static final long serialVersionUID = -3868766379525670107L;
 
-	@Id
-	private Long id;
-	/***
-	 * 权限组名称
-	 */
-	@Column(length = 64)
-	private String name;
+    @Id
+    private Long id;
 
-	/***
-	 * 程序使用，无此字段
-	 * <p>
-	 * 当前权限组内所有权限列表
-	 * </p>
-	 */
-	private transient List<Authority> authorities;
+    /***
+     * 权限组名称
+     */
+    @Column(length = 64)
+    private String name;
 
-	public Long getId() {
-		return id;
-	}
+    /***
+     * 程序使用，无此字段
+     * <p>
+     * 当前权限组内所有权限列表
+     * </p>
+     */
+    private transient List<Authority> authorities;
 
-	public AuthorityGroup setId(Long id) {
-		this.id = id;
-		return this;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public AuthorityGroup setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
-	public AuthorityGroup setName(String name) {
-		this.name = name;
-		return this;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public List<Authority> getAuthorities() {
-		return authorities;
-	}
+    public AuthorityGroup setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-	public AuthorityGroup setAuthorities(List<Authority> authorities) {
-		this.authorities = authorities;
-		return this;
-	}
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
 
-	public AuthorityGroup() {
-		super();
-	}
+    public AuthorityGroup setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+        return this;
+    }
 
-	public AuthorityGroup(Long id) {
-		super();
-		this.id = id;
-	}
+    public AuthorityGroup() {
+        super();
+    }
+
+    public AuthorityGroup(Long id) {
+        super();
+        this.id = id;
+    }
 
 }

@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
@@ -17,71 +19,75 @@ import com.cheuks.bin.original.db.DefaultBaseEntity;
  * @date 2017年6月3日 上午11:04:52
  *
  */
+@DynamicInsert(true)
 @Entity(name = "simple_authority")
 public class Authority extends DefaultBaseEntity {
 
-	private static final long serialVersionUID = 4856571139294637864L;
+    private static final long serialVersionUID = 4856571139294637864L;
 
-	@Id
-	private Long id;
-	/***
-	 * 权限名称
-	 */
-	@Column(length = 64)
-	private String name;
-	/***
-	 * 拦截路径
-	 */
-	@Column(length = 256, name = "filter_path")
-	private String filterPath;
-	/***
-	 * 启用开/关
-	 */
-	private Boolean activit;
+    @Id
+    private Long id;
 
-	public Long getId() {
-		return id;
-	}
+    /***
+     * 权限名称
+     */
+    @Column(length = 64)
+    private String name;
 
-	public Authority setId(Long id) {
-		this.id = id;
-		return this;
-	}
+    /***
+     * 拦截路径
+     */
+    @Column(length = 256, name = "filter_path")
+    private String filterPath;
 
-	public String getName() {
-		return name;
-	}
+    /***
+     * 启用开/关
+     */
+    private Boolean activit;
 
-	public Authority setName(String name) {
-		this.name = name;
-		return this;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getFilterPath() {
-		return filterPath;
-	}
+    public Authority setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
-	public Authority setFilterPath(String filterPath) {
-		this.filterPath = filterPath;
-		return this;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Boolean getActivit() {
-		return activit;
-	}
+    public Authority setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-	public Authority setActivit(Boolean activit) {
-		this.activit = activit;
-		return this;
-	}
+    public String getFilterPath() {
+        return filterPath;
+    }
 
-	public Authority() {
-		super();
-	}
+    public Authority setFilterPath(String filterPath) {
+        this.filterPath = filterPath;
+        return this;
+    }
 
-	public Authority(Long id) {
-		super();
-		this.id = id;
-	}
+    public Boolean getActivit() {
+        return activit;
+    }
+
+    public Authority setActivit(Boolean activit) {
+        this.activit = activit;
+        return this;
+    }
+
+    public Authority() {
+        super();
+    }
+
+    public Authority(Long id) {
+        super();
+        this.id = id;
+    }
 
 }

@@ -14,19 +14,19 @@ import com.simple.core.service.AuthorityGroupService;
 @Component
 public class AuthorityGroupServiceImpl extends AbstractService<AuthorityGroup, Long> implements AuthorityGroupService {
 
-	@Autowired
-	private AuthorityGroupDao authorityGroupDao;
+    @Autowired
+    private AuthorityGroupDao authorityGroupDao;
 
-	@Override
-	public BaseDao<AuthorityGroup, Long> getDao() {
-		return authorityGroupDao;
-	}
+    @Override
+    public BaseDao<AuthorityGroup, Long> getDao() {
+        return authorityGroupDao;
+    }
 
-	public void delete(Map<String, Object> params) throws Throwable {
-		if (params.containsKey("id")) {
-			super.delete(new AuthorityGroup((Long) params.get("id")));
-		}
-		throw new RuntimeException("can't found pk field.");
-	}
+    public void delete(Map<String, Object> params) throws Throwable {
+        if (params.containsKey("id")) {
+            super.delete(new AuthorityGroup(Long.valueOf(params.get("id").toString())));
+        }
+        throw new RuntimeException("can't found pk field.");
+    }
 
 }

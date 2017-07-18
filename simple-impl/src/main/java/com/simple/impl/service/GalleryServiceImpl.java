@@ -35,7 +35,7 @@ public class GalleryServiceImpl extends AbstractService<Gallery, Long> implement
 
     public void delete(Long tenantId, Map<String, Object> params) throws Throwable {
         if (params.containsKey("id")) {
-            Gallery gallery = getByPk((Long) params.get("id"));
+            Gallery gallery = getByPk(Long.valueOf(params.get("id").toString()));
             if (null != gallery) {
                 File image = new File(gallery.getPath());
                 if (image.exists())
@@ -57,7 +57,7 @@ public class GalleryServiceImpl extends AbstractService<Gallery, Long> implement
     }
 
     public void update(Long tenantId, Map<String, Object> params) throws Throwable {
-        Long id = (Long) params.remove("id");
+        Long id = Long.valueOf(params.remove("id").toString());
         Gallery gallery = getByPk(tenantId, id);
         if (null != gallery) {
             galleryDao.update(fillObject(gallery, params));

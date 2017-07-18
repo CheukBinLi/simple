@@ -28,7 +28,7 @@ public class KeyValueExtendServiceImpl extends AbstractService<KeyValueExtend, L
 		params.put("tenantId", tenantId);
 		KeyValueExtend keyValueExtend;
 		if (params.containsKey("id")) {
-			Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", params.remove("id"), "tenantId", tenantId });
+			Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", Long.valueOf(params.remove("id").toString()), "tenantId", tenantId });
 			List<KeyValueExtend> list = getList(tempParams);
 			if (null != list && list.size() == 1) {
 				keyValueExtend = list.get(0);
@@ -42,7 +42,7 @@ public class KeyValueExtendServiceImpl extends AbstractService<KeyValueExtend, L
 	}
 
 	public void update(Long tenantId, Map<String, Object> params) throws Throwable {
-		KeyValueExtend keyValueExtend = keyValueExtendDao.get((Long) params.get("id"));
+		KeyValueExtend keyValueExtend = keyValueExtendDao.get(Long.valueOf( params.get("id").toString()));
 		if (null != keyValueExtend && keyValueExtend.getTenantId() == tenantId) {
 			keyValueExtendDao.update(fillObject(keyValueExtend, params));
 		}

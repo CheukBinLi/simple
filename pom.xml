@@ -41,6 +41,13 @@
 		<httpclient.version>4.5.2</httpclient.version>
 		<beetl.version>2.5.2</beetl.version>
 	</properties>
+	
+	<repositories>
+		<repository>
+			<id>git-maven-repo</id>
+			<url>https://raw.githubusercontent.com/fdisk123/original/snapshot</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -53,6 +60,6 @@
 	<modules>
 		<module>simple-core</module>
 		<module>simple-impl</module>
-    <module>simple-web</module>
-  </modules>
+		<module>simple-web</module>
+	</modules>
 </project>

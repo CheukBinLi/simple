@@ -28,7 +28,7 @@ public class AppointmentServiceImpl extends AbstractService<Appointment, Long> i
 		params.put("tenantId", tenantId);
 		Appointment appointment;
 		if (params.containsKey("id")) {
-			Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", params.remove("id"), "tenantId", tenantId });
+			Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", Long.valueOf(params.remove("id").toString()), "tenantId", tenantId });
 			List<Appointment> list = getList(tempParams);
 			if (null != list && list.size() == 1) {
 				appointment = list.get(0);
@@ -42,7 +42,7 @@ public class AppointmentServiceImpl extends AbstractService<Appointment, Long> i
 	}
 
 	public void update(Long tenantId, Map<String, Object> params) throws Throwable {
-		Appointment appointment = appointmentDao.get((Long) params.get("id"));
+		Appointment appointment = appointmentDao.get(Long.valueOf( params.get("id").toString()));
 		if (null != appointment && appointment.getTenantId() == tenantId) {
 			appointmentDao.update(fillObject(appointment, params));
 		}

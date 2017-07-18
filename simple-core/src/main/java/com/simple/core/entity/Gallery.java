@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import com.cheuks.bin.original.db.DefaultBaseEntity;
 
 /***
@@ -17,71 +19,76 @@ import com.cheuks.bin.original.db.DefaultBaseEntity;
  * @date 2017年7月3日 下午2:53:48
  *
  */
+@DynamicInsert(true)
 @Entity(name = "simple_gallery")
 public class Gallery extends DefaultBaseEntity {
 
-	private static final long serialVersionUID = 829272477771487335L;
+    private static final long serialVersionUID = 829272477771487335L;
 
-	@Id
-	private Long id;
-	@Column(nullable = false, name = "tenant_id")
-	private Long tenantId;
-	private String name;//文件名
-	private Long size;//文件大小
-	private String path;//文件路径
+    @Id
+    private Long id;
 
-	public Long getId() {
-		return id;
-	}
+    @Column(nullable = false, name = "tenant_id")
+    private Long tenantId;
 
-	public Gallery setId(Long id) {
-		this.id = id;
-		return this;
-	}
+    private String name;// 文件名
 
-	public Long getTenantId() {
-		return tenantId;
-	}
+    private Long size;// 文件大小
 
-	public Gallery setTenantId(Long tenantId) {
-		this.tenantId = tenantId;
-		return this;
-	}
+    private String path;// 文件路径
 
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Gallery setName(String name) {
-		this.name = name;
-		return this;
-	}
+    public Gallery setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
-	public Long getSize() {
-		return size;
-	}
+    public Long getTenantId() {
+        return tenantId;
+    }
 
-	public Gallery setSize(Long size) {
-		this.size = size;
-		return this;
-	}
+    public Gallery setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Gallery setPath(String path) {
-		this.path = path;
-		return this;
-	}
+    public Gallery setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-	public Gallery() {
-		super();
-	}
+    public Long getSize() {
+        return size;
+    }
 
-	public Gallery(Long id) {
-		super();
-		this.id = id;
-	}
+    public Gallery setSize(Long size) {
+        this.size = size;
+        return this;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public Gallery setPath(String path) {
+        this.path = path;
+        return this;
+    }
+
+    public Gallery() {
+        super();
+    }
+
+    public Gallery(Long id) {
+        super();
+        this.id = id;
+    }
 
 }

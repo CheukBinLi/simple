@@ -1,7 +1,6 @@
 package com.simple.web.filter;
 
 import java.io.IOException;
-import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,9 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("unused")
 public class CrossFilter implements Filter, FilterConstant {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CrossFilter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CrossFilter.class);
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 

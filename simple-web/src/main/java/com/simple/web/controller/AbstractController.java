@@ -2,6 +2,8 @@ package com.simple.web.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -11,7 +13,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,24 +20,21 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import com.cheuks.bin.original.cache.FstCacheSerialize;
 import com.cheuks.bin.original.common.cache.CacheSerialize;
-import com.cheuks.bin.original.common.util.JsonMsgModel;
-import com.cheuks.bin.original.common.util.ObjectFill;
-import com.cheuks.bin.original.common.web.common.controller.BaseController;
+import com.cheuks.bin.original.common.dbmanager.LogicStatus;
 import com.cheuks.bin.original.common.web.common.model.UploadFileModel;
 import com.simple.core.model.LoginInfoModel;
 import com.simple.core.util.SimpleConstant;
 
-public abstract class AbstractController extends ObjectFill implements SimpleConstant, ApplicationContextAware, BaseController<HttpServletRequest, HttpServletResponse, JsonMsgModel, ModelAndView> {
+@SuppressWarnings("unused")
+public abstract class AbstractController extends com.cheuks.bin.original.web.common.controller.AbstractController<ModelAndView> implements SimpleConstant, ApplicationContextAware {
 
     private final static Logger LOG = LoggerFactory.getLogger(AbstractController.class);
 
@@ -49,6 +47,8 @@ public abstract class AbstractController extends ObjectFill implements SimpleCon
     private static volatile String pageSize = "pageSize";
 
     private static volatile boolean isInit;
+
+    private static volatile String uploadPath;
 
     public AbstractController setCacheSerialize(CacheSerialize cacheSerialize) {
         AbstractController.cacheSerialize = cacheSerialize;
@@ -63,11 +63,18 @@ public abstract class AbstractController extends ObjectFill implements SimpleCon
                 }
                 isInit = true;
                 cacheSerialize = applicationContext.containsBean("cacheSerialize") ? (CacheSerialize) applicationContext.getBean("cacheSerialize") : new FstCacheSerialize();
-                requestMappingHandlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
-                Map<RequestMappingInfo, HandlerMethod> mapping = requestMappingHandlerMapping.getHandlerMethods();
-                for (Entry<RequestMappingInfo, HandlerMethod> en : mapping.entrySet()) {
-                    System.err.println("key:" + en.getKey() + " value:" + en.getKey());
-                }
+
+                if (null == uploadPath)
+                    uploadPath = (String) applicationContext.getBean("updatePath");
+                // requestMappingHandlerMapping =
+                // applicationContext.getBean(RequestMappingHandlerMapping.class);
+                // Map<RequestMappingInfo, HandlerMethod> mapping =
+                // requestMappingHandlerMapping.getHandlerMethods();
+                // for (Entry<RequestMappingInfo, HandlerMethod> en :
+                // mapping.entrySet()) {
+                // System.err.println("key:" + en.getKey() + " value:" +
+                // en.getKey());
+                // }
             }
         }
     }
@@ -115,6 +122,22 @@ public abstract class AbstractController extends ObjectFill implements SimpleCon
         return map;
     }
 
+    protected final Map<String, Object> getParams(HttpServletRequest request, boolean cleanEmpty, boolean cleanNull) {
+        Enumeration<String> en = request.getParameterNames();
+        Map<String, Object> map = new HashMap<String, Object>();
+        String name;
+        Object tempValue;
+        while (en.hasMoreElements()) {
+            name = en.nextElement();
+            tempValue = request.getParameter(name);
+            if (cleanNull && (null == tempValue || ("null".equals(tempValue))) || cleanEmpty && null != tempValue && tempValue.toString().isEmpty()) {
+                continue;
+            }
+            map.put(name, tempValue);
+        }
+        return map;
+    }
+
     protected Map<String, Object> checkPageAndSize(HttpServletRequest request) {
         return checkPageAndSize(getParams(request));
     }
@@ -132,6 +155,9 @@ public abstract class AbstractController extends ObjectFill implements SimpleCon
             params.put(pageNumber, -1);
             params.put(pageSize, -1);
         }
+        if (!params.containsKey("logicStatus")) {
+            params.put("logicStatus", LogicStatus.NORMAL);
+        }
         return params;
     }
 
@@ -141,7 +167,7 @@ public abstract class AbstractController extends ObjectFill implements SimpleCon
 
     protected List<UploadFileModel> uploadFile(HttpServletRequest request, String savePath, boolean isUpdate) throws IllegalStateException, IOException {
         CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-        String realPath = getRealPath(request);
+        String realPath = null == getUploadPath() ? getRealPath(request) : getUploadPath();
         List<UploadFileModel> result = null;
         File file;
         if (commonsMultipartResolver.isMultipart(request)) {
@@ -161,15 +187,16 @@ public abstract class AbstractController extends ObjectFill implements SimpleCon
                 fileList = multiValueMap.get(it.next());
                 if (null == fileList) {
                     continue;
-                } else if (fileList.size() > 1) {
+                } else if (isUpdate && fileList.size() > 1) {
                     throw new RuntimeException("the upload file size more then one.");
                 }
                 for (MultipartFile multipartFile : fileList) {
                     if (multipartFile.getSize() < 1)
                         continue;
-                    if (isUpdate) {
+                    if (isUpdate && !savePath.isEmpty()) {
                         file = new File(realPath + "/" + savePath);
-                        file.delete();
+                        if (file.exists())
+                            file.delete();
                         savePath = savePath.substring(0, savePath.lastIndexOf("/"));
                     } else {
                         fileName = multipartFile.getOriginalFilename();
@@ -187,33 +214,6 @@ public abstract class AbstractController extends ObjectFill implements SimpleCon
             }
         }
         return result;
-    }
-
-    public JsonMsgModel fail(String msg, Throwable e) {
-        if (null != e)
-            LOG.error(null, e);
-        return new JsonMsgModel(-1, msg);
-    }
-
-    public JsonMsgModel fail(Throwable e) {
-        LOG.error(null, e);
-        return new JsonMsgModel(-1, e.getMessage());
-    }
-
-    public JsonMsgModel fail() {
-        return new JsonMsgModel(-1, "fail");
-    }
-
-    public JsonMsgModel success(String msg, Object data, Object attachment) {
-        return new JsonMsgModel(0, msg, data, attachment);
-    }
-
-    public JsonMsgModel success(Object data) {
-        return success("success", data, null);
-    }
-
-    public JsonMsgModel success() {
-        return success(null, null, null);
     }
 
     public ModelAndView exceptionPage(Throwable e) {
@@ -255,5 +255,76 @@ public abstract class AbstractController extends ObjectFill implements SimpleCon
         }
         sb.setLength(sb.length() - 1);
         return sb.toString();
+    }
+
+    protected Map<String, Object> checkDateTimeObject(Map<String, Object> params, String dateformat, boolean cleanNull) throws ParseException {
+        if (null == params || params.isEmpty())
+            return params;
+        // final String reg =
+        // "^(\\d{4})-(0\\d{1}|1[0-2])-(0\\d{1}|[12]\\d{1}|3[01])
+        // (0\\d{1}|1\\d{1}|2[0-3]):[0-5]\\d{1}:([0-5]\\d{1})$";
+        // final SimpleDateFormat format = new SimpleDateFormat(null ==
+        // dateformat ? "yyyy-MM-dd HH:mm:ss" : dateformat);
+        final String reg = "^(\\d{4})-(0\\d{1}|1[0-2])-(0\\d{1}|[12]\\d{1}|3[01])$";
+        final SimpleDateFormat format = new SimpleDateFormat(null == dateformat ? "yyyy-MM-dd" : dateformat);
+        return cleanEmptyObject(params, cleanNull, new CheckProcessing() {
+
+            public Entry<String, Object> processing(Entry<String, Object> en) {
+                Object tempValue;
+                String value;
+                value = null == (tempValue = en.getValue()) ? null : tempValue.toString();
+                if (value.matches(reg)) {
+                    try {
+                        en.setValue(format.parse(value));
+                        return en;
+                    } catch (ParseException e) {
+                        LOG.error(null, e);
+                    }
+                }
+                return en;
+            }
+        });
+    }
+
+    protected Map<String, Object> cleanEmptyObject(Map<String, Object> params, boolean cleanNull, CheckProcessing checkProcessing) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (null == params || params.isEmpty())
+            return result;
+        Iterator<Entry<String, Object>> it = params.entrySet().iterator();
+        Entry<String, Object> en;
+        Object tempValue;
+        String value;
+        while (it.hasNext()) {
+            en = it.next();
+            tempValue = en.getValue();
+            if (null != tempValue && (value = tempValue.toString()).length() > 0) {
+                if (cleanNull && ("null".equals(value) || null == value)) {
+                    continue;
+                }
+                en = checkProcessing.processing(en);
+                if (null != en) {
+                    result.put(en.getKey(), en.getValue());
+                }
+            }
+        }
+        return result;
+    }
+
+    interface CheckProcessing {
+        Entry<String, Object> processing(Entry<String, Object> en);
+    }
+
+    public static String getUploadPath() {
+        return uploadPath;
+    }
+
+    public AbstractController setUploadPath(String uploadPath) {
+        AbstractController.uploadPath = uploadPath;
+        return this;
+    }
+
+    public static void main(String[] args) {
+        String reg = "^(\\d{4})-(0\\d{1}|1[0-2])-(0\\d{1}|[12]\\d{1}|3[01]) (0\\d{1}|1\\d{1}|2[0-3]):[0-5]\\d{1}:([0-5]\\d{1})$";
+        System.out.println("2019-01-03 12:31:33".matches(reg));
     }
 }

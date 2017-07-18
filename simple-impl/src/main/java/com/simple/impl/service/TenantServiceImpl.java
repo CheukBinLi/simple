@@ -27,7 +27,7 @@ public class TenantServiceImpl extends AbstractService<Tenant, Long> implements 
 	public void saveOrUpdate(Long tenantId, Map<String, Object> params) throws Throwable {
 		Tenant tenant;
 		if (params.containsKey("id")) {
-			Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", params.remove("id") });
+			Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", Long.valueOf(params.remove("id").toString()) });
 			List<Tenant> list = getList(tempParams);
 			if (null != list && list.size() == 1) {
 				tenant = list.get(0);
@@ -42,7 +42,7 @@ public class TenantServiceImpl extends AbstractService<Tenant, Long> implements 
 
 	public void delete(Map<String, Object> params) throws Throwable {
 		if (params.containsKey("id")) {
-			super.delete(new Tenant((Long) params.get("id")));
+			super.delete(new Tenant(Long.valueOf( params.get("id").toString())));
 		}
 		throw new RuntimeException("can't found pk field.");
 	}

@@ -34,45 +34,46 @@ import com.simple.web.controller.AbstractController;
 @RequestMapping("/web/personnelInfo/")
 public class PersonnelInfoController extends AbstractController {
 
-	@Autowired
-	private PersonnelInfoService personnelInfoService;
+    @Autowired
+    private PersonnelInfoService personnelInfoService;
 
-	/***
-	 * 根据ID查询人员信息
-	 * 
-	 * @param request
-	 * @param response
-	 * @param id
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "get/{id}", method = { RequestMethod.GET })
-	public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
-		try {
-			return success(personnelInfoService.getByPk(id));
-		} catch (Throwable e) {
-			return fail(e);
-		}
-	}
+    /***
+     * 根据ID查询人员信息
+     * 
+     * @param request
+     * @param response
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "get/{id}", method = { RequestMethod.GET })
+    public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
+        try {
+            return success(personnelInfoService.getByPk(id));
+        } catch (Throwable e) {
+            return fail(e);
+        }
+    }
 
-	/***
-	 * 根据租户查询人员信息列表
-	 * 
-	 * @param params 附加：各种条件参数
-	 * @param tenantId
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "getlist/by/{tenantId}", method = { RequestMethod.POST })
-	public Object getList(@RequestBody(required = false) Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
-		params = null == params ? new HashMap<String, Object>() : params;
-		try {
-			params.put("tenantId", tenantId);
-			return success(personnelInfoService.getpage(checkPageAndSize(params)));
-		} catch (Throwable e) {
-			return fail(e);
-		}
-	}
+    /***
+     * 根据租户查询人员信息列表
+     * 
+     * @param params
+     *            附加：各种条件参数
+     * @param tenantId
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getlist/by/{tenantId}", method = { RequestMethod.POST })
+    public Object getList(@RequestBody(required = false) Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
+        params = null == params ? new HashMap<String, Object>() : params;
+        try {
+            params.put("tenantId", tenantId);
+            return success(personnelInfoService.getpage(checkPageAndSize(checkDateTimeObject(params, null, true))));
+        } catch (Throwable e) {
+            return fail(e);
+        }
+    }
 }

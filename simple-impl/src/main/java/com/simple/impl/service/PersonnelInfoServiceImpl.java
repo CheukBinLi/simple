@@ -36,7 +36,7 @@ public class PersonnelInfoServiceImpl extends AbstractService<PersonnelInfo, Lon
         params.put("tenantId", tenantId);
         PersonnelInfo personnelInfo;
         if (params.containsKey("id")) {
-            Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", params.remove("id"), "tenantId", tenantId });
+            Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", Long.valueOf(params.remove("id").toString()), "tenantId", tenantId });
             List<PersonnelInfo> list = getList(tempParams);
             if (null != list && list.size() == 1) {
                 personnelInfo = list.get(0);
@@ -50,7 +50,7 @@ public class PersonnelInfoServiceImpl extends AbstractService<PersonnelInfo, Lon
     }
 
     public void update(Long tenantId, Map<String, Object> params) throws Throwable {
-        PersonnelInfo personnelInfo = personnelInfoDao.get((Long) params.get("id"));
+        PersonnelInfo personnelInfo = personnelInfoDao.get(Long.valueOf( params.get("id").toString()));
         if (null != personnelInfo && personnelInfo.getTenantId() == tenantId) {
             personnelInfoDao.update(fillObject(personnelInfo, params));
         }

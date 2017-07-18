@@ -70,7 +70,7 @@ public class KeyValueExtendController extends AbstractController {
 		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			params.put("tenantId", tenantId);
-			return success(keyValueExtendService.getpage(checkPageAndSize(params)));
+			return success(keyValueExtendService.getpage(checkPageAndSize(cleanEmptyObject(params, true, null))));
 		} catch (Throwable e) {
 			return fail(e);
 		}

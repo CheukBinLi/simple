@@ -18,55 +18,73 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cheuks.bin.original.common.web.common.model.UploadFileModel;
 import com.simple.core.model.LoginInfoModel;
-import com.simple.core.service.PersonnelInfoService;
+import com.simple.core.service.GalleryService;
 import com.simple.web.controller.AbstractController;
 
 /***
- * 人员信息管理接口
+ * 图库接口
  * 
  * @Title: simple-web
- * @Description:人员信息管理接口
+ * @Description: 图库接口
  * @Company:
  * @Email: 20796698@qq.com
  * @author cheuk.bin.li
- * @date 2017年6月21日 下午5:06:33
+ * @date 2017年6月21日 下午4:57:35
  *
  */
 @Controller
 @Scope("prototype")
-@RequestMapping("/manager/personnelInfo/")
-public class PersonnelInfoManagerController extends AbstractController {
+@RequestMapping("/manager/gallery/")
+public class GalleryManagerController extends AbstractController {
 
     @Autowired
-    private PersonnelInfoService personnelInfoService;
+    private GalleryService galleryService;
 
+    /***
+     * 根据ID查询人员信息
+     * 
+     * @param request
+     * @param response
+     * @param id
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "get/{id}", method = { RequestMethod.GET })
     public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
         try {
-            return success(personnelInfoService.getByPk(id));
-        } catch (Throwable e) {
-            return fail(e);
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "getlist/by/{tenantId}", method = { RequestMethod.POST })
-    public Object getList(@RequestBody(required = false) Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
-        params = null == params ? new HashMap<String, Object>() : params;
-        try {
-            params.put("tenantId", tenantId);
-            return success(personnelInfoService.getpage(checkPageAndSize(checkDateTimeObject(params, null, true))));
+            return success(galleryService.getByPk(id));
         } catch (Throwable e) {
             return fail(e);
         }
     }
 
     /***
-     * 添加人员信息
+     * 根据租户查询人员信息列表
      * 
      * @param params
-     *            更新时必传：id/pic
+     *            附加：各种条件参数
+     * @param tenantId
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getlist/by/{tenantId}", method = { RequestMethod.POST })
+    public Object getList(@RequestBody(required = false) Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
+        params = null == params ? new HashMap<String, Object>() : params;
+        try {
+            params.put("tenantId", tenantId);
+            Object o=galleryService.getpage(checkPageAndSize(cleanEmptyObject(params, true, null)));
+            return success(o);
+        } catch (Throwable e) {
+            return fail(e);
+        }
+    }
+
+    /***
+     * 添加图片列表
+     * 
+     * @param params
      * @param request
      * @param response
      * @return
@@ -74,28 +92,45 @@ public class PersonnelInfoManagerController extends AbstractController {
     @ResponseBody
     @RequestMapping(value = "put", method = { RequestMethod.POST })
     public Object put(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> params = getParams(request, true, true);
         try {
             LoginInfoModel loginInfoModel = getLoginInfo(request);
-            boolean isUpload;
-            String savePath = (isUpload = params.containsKey("id") && null != params.get("pic") && !params.get("pic").toString().isEmpty()) ? params.get("pic").toString() : String.format("personnelInfo/%d", loginInfoModel.getUser().getTenantId());
-            List<UploadFileModel> uploadFile = uploadFile(request, savePath, isUpload);
-            if (null != uploadFile && !uploadFile.isEmpty())
-                params.put("pic", uploadFile.get(0).getPath());// 第0张图片
-            personnelInfoService.saveOrUpdate(loginInfoModel.getUser().getTenantId(), params);
+            String savePath = String.format("gallery/%d", loginInfoModel.getUser().getTenantId());
+            List<UploadFileModel> uploadFiles = uploadFile(request, savePath, false);
+            galleryService.save(loginInfoModel.getUser().getTenantId(), uploadFiles);
             return success();
         } catch (Throwable e) {
             return fail(e);
         }
     }
 
+    /***
+     * 更新图片列表
+     * 
+     * @param params
+     *            必传参数：id/path
+     * @param request
+     * @param response
+     * @return
+     */
     @ResponseBody
-    @RequestMapping(value = "delete", method = { RequestMethod.DELETE })
-    public Object delete(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
-        params = null == params ? new HashMap<String, Object>() : params;
+    @RequestMapping(value = "update", method = { RequestMethod.POST })
+    public Object update(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> params = getParams(request);
+        if (!params.containsKey("id")) {
+            return fail("can't found id param", null);
+        }
+        if (!params.containsKey("path")) {
+            return fail("can't found path param.", null);
+        }
         try {
-            params.put(REAL_PATH, getRealPath(request));
-            personnelInfoService.delete(getLoginInfo(request).getUser().getTenantId(), params);
+            LoginInfoModel loginInfoModel = getLoginInfo(request);
+
+            List<UploadFileModel> uploadFiles = uploadFile(request, params.get("path").toString(), true);
+            UploadFileModel uploadFile = uploadFiles.get(0);
+            params.put("name", uploadFile.getName());
+            params.put("size", uploadFile.getSize());
+            params.put("path", uploadFile.getPath());
+            galleryService.update(loginInfoModel.getUser().getTenantId(), params);
             return success();
         } catch (Throwable e) {
             return fail(e);

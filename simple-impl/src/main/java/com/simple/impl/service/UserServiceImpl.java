@@ -16,36 +16,36 @@ import com.simple.core.service.UserService;
 @Component
 public class UserServiceImpl extends AbstractService<User, Long> implements UserService {
 
-	@Autowired
-	private UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
-	@Override
-	public BaseDao<User, Long> getDao() {
-		return userDao;
-	}
+    @Override
+    public BaseDao<User, Long> getDao() {
+        return userDao;
+    }
 
-	public void saveOrUpdate(Long tenantId, Map<String, Object> params) throws Throwable {
-		params.put("tenantId", tenantId);
-		User user;
-		if (params.containsKey("id")) {
-			Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", params.remove("id") });
-			List<User> list = getList(tempParams);
-			if (null != list && list.size() == 1) {
-				user = list.get(0);
-				user = fillObject(user, params);
-				userDao.update(user);
-				return;
-			}
-			throw new RuntimeException("can't found data for id is " + tempParams.get("id") + " and tenantId is " + tenantId);
-		}
-		userDao.save(fillObject(new User().setId(generateId()), params));
-	}
+    public void saveOrUpdate(Long tenantId, Map<String, Object> params) throws Throwable {
+        params.put("tenantId", tenantId);
+        User user;
+        if (params.containsKey("id")) {
+            Map<String, Object> tempParams = CollectionUtil.newInstance().toMap(true, new Object[] { "id", Long.valueOf(params.remove("id").toString()) });
+            List<User> list = getList(tempParams);
+            if (null != list && list.size() == 1) {
+                user = list.get(0);
+                user = fillObject(user, params);
+                userDao.update(user);
+                return;
+            }
+            throw new RuntimeException("can't found data for id is " + tempParams.get("id") + " and tenantId is " + tenantId);
+        }
+        userDao.save(fillObject(new User().setId(generateId()), params));
+    }
 
-	public void delete(Map<String, Object> params) throws Throwable {
-		if (params.containsKey("id")) {
-			super.delete(new User((Long) params.get("id")));
-		}
-		throw new RuntimeException("can't found pk field.");
-	}
+    public void delete(Map<String, Object> params) throws Throwable {
+        if (params.containsKey("id")) {
+            super.delete(new User(Long.valueOf(params.get("id").toString())));
+        }
+        throw new RuntimeException("can't found pk field.");
+    }
 
 }

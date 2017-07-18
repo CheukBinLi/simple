@@ -64,7 +64,7 @@ public class ArticleManagerController extends AbstractController {
 		try {
 			params.put("tenantId", tenantId);
 			params.put("articleType", articleType);
-			return success(articleService.getpage(checkPageAndSize(params)));
+			return success(articleService.getpage(checkPageAndSize(cleanEmptyObject(params, true, null))));
 		} catch (Throwable e) {
 			return fail(e);
 		}

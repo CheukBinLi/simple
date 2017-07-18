@@ -73,31 +73,9 @@ public class AppointmentController extends AbstractController {
 		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			params.put("tenantId", tenantId);
-			return success(appointmentService.getpage(checkPageAndSize(params)));
+			return success(appointmentService.getpage(checkPageAndSize(checkDateTimeObject(params, null,true))));
 		} catch (Throwable e) {
 			return fail(e);
 		}
 	}
-
-	/***
-	 * 添加预约
-	 * 
-	 * @param params
-	 * @param tenantId 租户ID
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "{tenantId}/put", method = { RequestMethod.PUT })
-	public Object put(@RequestBody(required = false) Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
-		params = null == params ? new HashMap<String, Object>() : params;
-		try {
-			appointmentService.saveOrUpdate(tenantId, params);
-			return success();
-		} catch (Throwable e) {
-			return fail(e);
-		}
-	}
-
 }

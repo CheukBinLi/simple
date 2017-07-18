@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Table;
 
@@ -18,8 +19,10 @@ import com.cheuks.bin.original.db.DefaultBaseEntity;
  * @author cheuk.bin.li
  * @date 2017年6月3日 上午11:07:56
  *
+ *
  */
 @SuppressWarnings("deprecation")
+@DynamicInsert(true)
 @Entity(name = "simple_key_value_extend")
 @Table(appliesTo = "simple_key_value_extend", indexes = { @Index(columnNames = "core", name = "key_value_extend_core_index") })
 public class KeyValueExtend extends DefaultBaseEntity {
@@ -44,10 +47,10 @@ public class KeyValueExtend extends DefaultBaseEntity {
 	 * key/类型
 	 */
 	private String core;
-	@Column(length = 102400)
 	/***
 	 * value/内容
 	 */
+	@Column(length = 102400)
 	private String content;
 
 	public Long getId() {
