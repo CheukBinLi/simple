@@ -45,7 +45,7 @@
 	<repositories>
 		<repository>
 			<id>git-maven-repo</id>
-			<url>https://raw.githubusercontent.com/fdisk123/original/snapshot</url>
+			<url>https://raw.githubusercontent.com/fdisk123/original/snapshot2.11</url>
 		</repository>
 	</repositories>
 

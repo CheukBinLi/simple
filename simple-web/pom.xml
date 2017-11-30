@@ -89,26 +89,16 @@
 			<artifactId>spring-webmvc-portlet</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!-- security -->
+		<!-- session -->
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>${spring-security.version}</version>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session</artifactId>
+			<version>${spring-session.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-			<version>${spring-security.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>${spring-security.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-taglibs</artifactId>
-			<version>${spring-security.version}</version>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+			<version>${spring-session.version}</version>
 		</dependency>
 		<!-- spring end -->
 		<!-- Hibernate start -->
@@ -178,6 +168,11 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.8.9</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.cheuks.bin</groupId>
@@ -197,6 +192,11 @@
 		<dependency>
 			<groupId>com.cheuks.bin</groupId>
 			<artifactId>original-cache</artifactId>
+			<version>${original.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.cheuks.bin</groupId>
+			<artifactId>original-web-common</artifactId>
 			<version>${original.version}</version>
 		</dependency>
 		<dependency>
