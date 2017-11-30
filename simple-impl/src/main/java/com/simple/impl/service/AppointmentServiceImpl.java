@@ -8,10 +8,14 @@ import org.springframework.stereotype.Component;
 
 import com.cheuks.bin.original.common.dbmanager.dao.BaseDao;
 import com.cheuks.bin.original.common.dbmanager.service.AbstractService;
-import com.cheuks.bin.original.common.util.CollectionUtil;
+import com.cheuks.bin.original.common.util.conver.CollectionUtil;
 import com.simple.core.dao.AppointmentDao;
 import com.simple.core.entity.Appointment;
 import com.simple.core.service.AppointmentService;
+
+import javassist.ClassClassPath;
+import javassist.ClassPool;
+import javassist.CtClass;
 
 @Component
 public class AppointmentServiceImpl extends AbstractService<Appointment, Long> implements AppointmentService {

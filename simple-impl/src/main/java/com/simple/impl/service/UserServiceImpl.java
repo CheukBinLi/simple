@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.cheuks.bin.original.common.dbmanager.dao.BaseDao;
 import com.cheuks.bin.original.common.dbmanager.service.AbstractService;
-import com.cheuks.bin.original.common.util.CollectionUtil;
+import com.cheuks.bin.original.common.util.conver.CollectionUtil;
 import com.simple.core.dao.UserDao;
 import com.simple.core.entity.User;
 import com.simple.core.service.UserService;
@@ -41,9 +41,10 @@ public class UserServiceImpl extends AbstractService<User, Long> implements User
         userDao.save(fillObject(new User().setId(generateId()), params));
     }
 
-    public void delete(Map<String, Object> params) throws Throwable {
+    public boolean delete(Map<String, Object> params) throws Throwable {
         if (params.containsKey("id")) {
             super.delete(new User(Long.valueOf(params.get("id").toString())));
+            return true;
         }
         throw new RuntimeException("can't found pk field.");
     }

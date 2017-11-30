@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.cheuks.bin.original.common.dbmanager.dao.BaseDao;
 import com.cheuks.bin.original.common.dbmanager.service.AbstractService;
-import com.cheuks.bin.original.common.util.CollectionUtil;
+import com.cheuks.bin.original.common.util.conver.CollectionUtil;
 import com.simple.core.dao.TenantDao;
 import com.simple.core.entity.Tenant;
 import com.simple.core.service.TenantService;
@@ -40,10 +40,11 @@ public class TenantServiceImpl extends AbstractService<Tenant, Long> implements 
 		tenantDao.save(fillObject(new Tenant().setId(generateId()), params));
 	}
 
-	public void delete(Map<String, Object> params) throws Throwable {
+	public boolean delete(Map<String, Object> params) throws Throwable {
 		if (params.containsKey("id")) {
 			super.delete(new Tenant(Long.valueOf( params.get("id").toString())));
-		}
+			return true;
+	        }
 		throw new RuntimeException("can't found pk field.");
 	}
 }

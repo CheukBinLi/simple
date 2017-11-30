@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.cheuks.bin.original.common.dbmanager.dao.BaseDao;
 import com.cheuks.bin.original.common.dbmanager.service.AbstractService;
-import com.cheuks.bin.original.common.util.CollectionUtil;
+import com.cheuks.bin.original.common.util.conver.CollectionUtil;
 import com.cheuks.bin.original.common.web.common.model.UploadFileModel;
 import com.simple.core.dao.GalleryDao;
 import com.simple.core.entity.Gallery;

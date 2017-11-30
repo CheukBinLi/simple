@@ -22,9 +22,10 @@ public class AuthorityServiceImpl extends AbstractService<Authority, Long> imple
         return authorityDao;
     }
 
-    public void delete(Map<String, Object> params) throws Throwable {
+    public boolean delete(Map<String, Object> params) throws Throwable {
         if (params.containsKey("id")) {
             super.delete(new Authority(Long.valueOf(params.get("id").toString())));
+            return true;
         }
         throw new RuntimeException("can't found pk field.");
     }

@@ -111,33 +111,6 @@ public abstract class AbstractController extends com.cheuks.bin.original.web.com
         return true;
     }
 
-    protected final Map<String, Object> getParams(HttpServletRequest request) {
-        Enumeration<String> en = request.getParameterNames();
-        Map<String, Object> map = new HashMap<String, Object>();
-        String name;
-        while (en.hasMoreElements()) {
-            name = en.nextElement();
-            map.put(name, request.getParameter(name));
-        }
-        return map;
-    }
-
-    protected final Map<String, Object> getParams(HttpServletRequest request, boolean cleanEmpty, boolean cleanNull) {
-        Enumeration<String> en = request.getParameterNames();
-        Map<String, Object> map = new HashMap<String, Object>();
-        String name;
-        Object tempValue;
-        while (en.hasMoreElements()) {
-            name = en.nextElement();
-            tempValue = request.getParameter(name);
-            if (cleanNull && (null == tempValue || ("null".equals(tempValue))) || cleanEmpty && null != tempValue && tempValue.toString().isEmpty()) {
-                continue;
-            }
-            map.put(name, tempValue);
-        }
-        return map;
-    }
-
     protected Map<String, Object> checkPageAndSize(HttpServletRequest request) {
         return checkPageAndSize(getParams(request));
     }

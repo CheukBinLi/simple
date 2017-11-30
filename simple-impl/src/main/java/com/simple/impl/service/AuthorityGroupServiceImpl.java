@@ -22,9 +22,10 @@ public class AuthorityGroupServiceImpl extends AbstractService<AuthorityGroup, L
         return authorityGroupDao;
     }
 
-    public void delete(Map<String, Object> params) throws Throwable {
+    public boolean delete(Map<String, Object> params) throws Throwable {
         if (params.containsKey("id")) {
             super.delete(new AuthorityGroup(Long.valueOf(params.get("id").toString())));
+            return true;
         }
         throw new RuntimeException("can't found pk field.");
     }

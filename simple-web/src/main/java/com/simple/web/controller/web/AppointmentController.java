@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.interceptor.BeanFactoryTransactionAttributeSourceAdvisor;
+import org.springframework.transaction.interceptor.TransactionProxyFactoryBean;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.simple.core.entity.Appointment;
 import com.simple.core.service.AppointmentService;
 import com.simple.web.controller.AbstractController;
+
+import javassist.ClassClassPath;
+import javassist.ClassPool;
+import javassist.CtClass;
 
 /***
  * 
@@ -32,7 +38,7 @@ import com.simple.web.controller.AbstractController;
  *
  */
 @Controller
-@Scope("prototype")
+// @Scope("prototype")
 @RequestMapping("/web/appointment/")
 public class AppointmentController extends AbstractController {
 
@@ -48,7 +54,7 @@ public class AppointmentController extends AbstractController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "get/{id}", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "get/{id}", method = {RequestMethod.GET, RequestMethod.POST})
 	public Object get(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
 		try {
 			Appointment appointment = appointmentService.getByPk(id);
@@ -61,19 +67,20 @@ public class AppointmentController extends AbstractController {
 	/***
 	 * 根据租户ID查询预约
 	 * 
-	 * @param params 附加:各种查询条件(驼峰参数名)
+	 * @param params
+	 *            附加:各种查询条件(驼峰参数名)
 	 * @param tenantId
 	 * @param request
 	 * @param response
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "getlist/by/{tenantId}", method = { RequestMethod.POST })
+	@RequestMapping(value = "getlist/by/{tenantId}", method = {RequestMethod.POST})
 	public Object getList(@RequestBody(required = false) Map<String, Object> params, @PathVariable("tenantId") Long tenantId, HttpServletRequest request, HttpServletResponse response) {
 		params = null == params ? new HashMap<String, Object>() : params;
 		try {
 			params.put("tenantId", tenantId);
-			return success(appointmentService.getpage(checkPageAndSize(checkDateTimeObject(params, null,true))));
+			return success(appointmentService.getpage(checkPageAndSize(checkDateTimeObject(params, null, true))));
 		} catch (Throwable e) {
 			return fail(e);
 		}
