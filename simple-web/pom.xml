@@ -209,11 +209,6 @@
 			<artifactId>simple-impl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com</groupId>
-			<artifactId>simple-core</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<finalName>simple-web</finalName>
